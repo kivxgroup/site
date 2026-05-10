@@ -853,6 +853,7 @@ footer {
 <nav>
   <a class="nav-logo" href="#">KIVX GROUP</a>
   <ul class="nav-links">
+    <li><a href="portfolio.html">Portfolio</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#process">Process</a></li>
@@ -1283,7 +1284,7 @@ footer {
     <ul class="contact-items">
       <li>
         <span class="contact-item-label">Email</span>
-        <span class="contact-item-val"><a href="mailto:info@kivxgroup.com">hello@kivxgroup.com</a></span>
+        <span class="contact-item-val"><a href="mailto:hello@kivxgroup.com">hello@kivxgroup.com</a></span>
       </li>
       <li>
         <span class="contact-item-label">LinkedIn</span>
@@ -1300,22 +1301,22 @@ footer {
     </ul>
   </div>
   <div class="contact-right">
-    <form onsubmit="return false;">
+    <form id="brief-form" action="https://formspree.io/f/mwvywzqb" method="POST">
       <div class="form-row">
         <label>Your name</label>
-        <input type="text" placeholder="John Smith">
+        <input type="text" name="name" placeholder="John Smith" required>
       </div>
       <div class="form-row">
         <label>Company</label>
-        <input type="text" placeholder="Acme Real Estate">
+        <input type="text" name="company" placeholder="Acme Real Estate">
       </div>
       <div class="form-row">
         <label>Email</label>
-        <input type="email" placeholder="john@company.com">
+        <input type="email" name="email" placeholder="john@company.com" required>
       </div>
       <div class="form-row">
         <label>Service</label>
-        <select>
+        <select name="service">
           <option value="">Select direction</option>
           <option>Premium Archviz — Exterior</option>
           <option>Premium Archviz — Interior</option>
@@ -1328,7 +1329,10 @@ footer {
       </div>
       <div class="form-row">
         <label>Brief</label>
-        <textarea placeholder="Describe your project, timeline, and any specific requirements. The more detail, the faster we can send you a scope."></textarea>
+        <textarea name="brief" placeholder="Describe your project, timeline, and any specific requirements. The more detail, the faster we can send you a scope."></textarea>
+      </div>
+      <div id="form-success" style="display:none;font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;color:var(--accent2);padding:1rem 0;">
+        ✓ Brief received. You will hear from us within 24 hours.
       </div>
       <button type="submit" class="form-submit">Send brief →</button>
       <p style="font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--muted);margin-top:1rem;line-height:1.6;">
@@ -1365,7 +1369,34 @@ const observer = new IntersectionObserver((entries) => {
 
 reveals.forEach(el => observer.observe(el));
 
-// Smooth active nav state
+// Form submission via Formspree
+const briefForm = document.getElementById('brief-form');
+if (briefForm) {
+  briefForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = briefForm.querySelector('.form-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(briefForm.action, {
+        method: 'POST',
+        body: new FormData(briefForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        briefForm.reset();
+        document.getElementById('form-success').style.display = 'block';
+        btn.style.display = 'none';
+      } else {
+        btn.textContent = 'Error — try again';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Error — try again';
+      btn.disabled = false;
+    }
+  });
+}
 const sections = document.querySelectorAll('section[id], header');
 const navLinks = document.querySelectorAll('.nav-links a');
 const navObserver = new IntersectionObserver((entries) => {
