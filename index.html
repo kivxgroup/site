@@ -93,6 +93,26 @@ nav {
   padding: 0 3rem;
   position: relative;
   overflow: hidden;
+  color: var(--paper);
+}
+
+.hero-video {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.hero-video video {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.hero-video::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(12,11,9,0.35) 0%,
+    rgba(12,11,9,0.2) 40%,
+    rgba(12,11,9,0.7) 100%
+  );
 }
 
 .hero-bg-text {
@@ -102,11 +122,12 @@ nav {
   font-size: 22vw;
   font-weight: 300;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(12,11,9,0.06);
+  -webkit-text-stroke: 1px rgba(245,242,236,0.06);
   line-height: 1;
   pointer-events: none;
   user-select: none;
   letter-spacing: -.02em;
+  z-index: 1;
 }
 
 .hero-content {
@@ -116,10 +137,25 @@ nav {
   padding-bottom: 6rem;
   padding-top: 10rem;
   max-width: 960px;
+  position: relative;
+  z-index: 2;
 }
 
-.hero-tag {
-  font-family: var(--mono);
+.hero-tag { color: var(--accent); }
+.hero-tag::before { background: var(--accent); }
+.hero-h1 { color: var(--paper); }
+.hero-h1 em { color: var(--accent); }
+.hero-sub { color: rgba(245,242,236,0.7); }
+.btn-primary { background: var(--paper); color: var(--ink); }
+.btn-primary:hover { background: var(--warm); }
+.btn-secondary { color: var(--paper); border-bottom-color: var(--accent); }
+.hero-bottom {
+  position: relative; z-index: 2;
+  border-top-color: rgba(245,242,236,0.15);
+}
+.stat-num { color: var(--paper); }
+.stat-label { color: rgba(245,242,236,0.5); }
+.hero-markets { color: rgba(245,242,236,0.4); }
   font-size: .72rem;
   letter-spacing: .2em;
   text-transform: uppercase;
@@ -859,12 +895,19 @@ footer {
     <li><a href="#process">Process</a></li>
     <li><a href="#why">Why us</a></li>
     <li><a href="#markets">Markets</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Start a project</a>
 </nav>
 
 <!-- HERO -->
 <header class="hero">
+  <div class="hero-video">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://res.cloudinary.com/kivxgroup/video/upload/q_auto,vc_vp9/Animation_For_Web_02.webm" type="video/webm">
+      <source src="https://res.cloudinary.com/kivxgroup/video/upload/q_auto,vc_h265/Animation_For_Web_02.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="hero-bg-text">KIVX</div>
   <div class="hero-content">
     <div class="hero-tag fade-up fade-up-1">Visual Production Studio — Warsaw, Poland</div>
@@ -1284,7 +1327,7 @@ footer {
     <ul class="contact-items">
       <li>
         <span class="contact-item-label">Email</span>
-        <span class="contact-item-val"><a href="mailto:info@kivxgroup.com">info@kivxgroup.com</a></span>
+        <span class="contact-item-val"><a href="mailto:hello@kivxgroup.com">hello@kivxgroup.com</a></span>
       </li>
       <li>
         <span class="contact-item-label">LinkedIn</span>
