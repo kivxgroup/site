@@ -22,7 +22,8 @@
   --fs-sm:      12px;  /* кнопки, теги секций */
   --fs-base:    16px;  /* основной текст */
   --fs-heading: 20px;  /* заголовки карточек h3 */
-  --fs-hero:    50px;  /* главные заголовки h1, h2 */
+  --fs-hero:    30px;  /* заголовки секций h2 */
+  --fs-hero-main: 50px; /* главный заголовок hero */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,7 +38,8 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2 { font-size: var(--fs-hero); font-weight: 300; }
+h1 { font-size: var(--fs-hero-main); font-weight: 300; }
+h2 { font-size: var(--fs-hero); font-weight: 300; }
 h3, h4, h5, h6 { font-size: var(--fs-heading); font-weight: 500; }
 p, li { font-size: var(--fs-base); }
 
