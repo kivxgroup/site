@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIVX GROUP — Outsourced Visual Department</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink:     #0C0B09;
@@ -16,9 +14,9 @@
   --muted:   #7A7570;
   --dark:    #1A1714;
   --line:    rgba(12,11,9,0.12);
-  --serif:   'Cormorant Garamond', Georgia, serif;
-  --mono:    'DM Mono', monospace;
-  --sans:    'Instrument Sans', sans-serif;
+  --serif:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,12 +47,21 @@ nav {
 }
 
 .nav-logo {
-  font-family: var(--mono);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: .85rem;
   letter-spacing: .18em;
   color: var(--ink);
   text-decoration: none;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-img {
+  height: 24px;
+  width: auto;
+  display: block;
 }
 
 .nav-links {
@@ -141,21 +148,21 @@ nav {
   z-index: 2;
 }
 
-.hero-tag { color: rgba(245,242,236,0.7); }
-.hero-tag::before { background: var(--accent); }
+.hero-tag { color: rgba(255,255,255,0.7); }
+.hero-tag::before { background: #ffffff; }
 .hero-h1 { color: #ffffff; }
 .hero-h1 em { color: #ffffff; font-style: italic; }
-.hero-sub { color: rgba(245,242,236,0.75); }
+.hero-sub { color: rgba(255,255,255,0.8); }
 .btn-primary { background: #ffffff; color: var(--ink); }
 .btn-primary:hover { background: var(--warm); }
-.btn-secondary { color: rgba(245,242,236,0.85); border-bottom-color: rgba(245,242,236,0.4); }
+.btn-secondary { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.4); }
 .hero-bottom {
   position: relative; z-index: 2;
-  border-top-color: rgba(245,242,236,0.15);
+  border-top-color: rgba(255,255,255,0.15);
 }
-.stat-num { color: var(--paper); }
-.stat-label { color: rgba(245,242,236,0.5); }
-.hero-markets { color: rgba(245,242,236,0.4); }
+.stat-num { color: #ffffff; }
+.stat-label { color: rgba(255,255,255,0.5); }
+.hero-markets { color: rgba(255,255,255,0.4); }
   font-size: .72rem;
   letter-spacing: .2em;
   text-transform: uppercase;
@@ -175,18 +182,18 @@ nav {
   font-weight: 300;
   line-height: 1.05;
   letter-spacing: -.02em;
-  color: var(--ink);
+  color: #ffffff;
   margin-bottom: 2.4rem;
 }
 .hero-h1 em {
   font-style: italic;
-  color: var(--accent2);
+  color: #ffffff;
 }
 
 .hero-sub {
   font-family: var(--sans);
   font-size: 1.05rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.85);
   max-width: 560px;
   line-height: 1.75;
   margin-bottom: 3rem;
@@ -819,11 +826,15 @@ footer {
   padding: 3rem; display: flex;
   justify-content: space-between; align-items: center;
 }
-.footer-logo {
-  font-family: var(--mono);
-  font-size: .8rem; letter-spacing: .2em;
+.footer-logo-link {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: .85rem; letter-spacing: .18em;
+  font-weight: 500;
   color: var(--paper);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
 }
+.footer-logo-link .nav-logo-img { filter: invert(1); height: 22px; }
 .footer-copy {
   font-family: var(--mono);
   font-size: .62rem; letter-spacing: .1em;
@@ -887,14 +898,15 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">KIVX GROUP</a>
+  <a class="nav-logo" href="#">
+    <img src="favicon.png" alt="logo" class="nav-logo-img">
+    KIVX GROUP
+  </a>
   <ul class="nav-links">
     <li><a href="portfolio.html">Portfolio</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#process">Process</a></li>
-    <li><a href="#why">Why us</a></li>
-    <li><a href="#markets">Markets</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Start a project</a>
@@ -908,69 +920,41 @@ footer {
       <source src="https://res.cloudinary.com/kivxgroup/video/upload/q_auto,vc_h265/Animation_For_Web_02.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="hero-bg-text">KIVX</div>
   <div class="hero-content">
-    <div class="hero-tag fade-up fade-up-1">Visual Production Studio — Warsaw, Poland</div>
     <h1 class="hero-h1 fade-up fade-up-2">
-      Your outsourced<br><em>visual department.</em><br>Not a studio.
+      Visual solutions<br>for <em>new developments.</em>
     </h1>
     <p class="hero-sub fade-up fade-up-3">
       We produce premium architectural CGI and AI-driven visual campaigns for brands and developers across the US, UAE, and Western Europe. You get a dedicated visual team — without the hiring overhead.
     </p>
     <div class="hero-actions fade-up fade-up-4">
       <a href="#contact" class="btn-primary">Start a project</a>
-      <a href="#services" class="btn-secondary">See what we do</a>
-    </div>
-  </div>
-  <div class="hero-bottom fade-up fade-up-5">
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">5–7</div>
-        <div class="stat-label">Days turnaround<br>AI campaigns</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">10–14</div>
-        <div class="stat-label">Days turnaround<br>Archviz package</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">B2B</div>
-        <div class="stat-label">Only. No freelance<br>platforms.</div>
-      </div>
-    </div>
-    <div class="hero-markets">
-      USA &nbsp;·&nbsp; UAE &nbsp;·&nbsp; Western Europe<br>
-      Premium &amp; Luxury Segment Only
     </div>
   </div>
 </header>
 
 <!-- POSITIONING -->
 <section id="positioning">
-  <div class="pos-bg">DEPT</div>
   <div class="section-tag">Who we are</div>
-  <h2 class="section-h2">We are not a studio.<br>We are your <em>visual team.</em></h2>
-  <p class="section-lead">Most agencies sell you a render. We sell you the absence of headaches. One brief, one point of contact, predictable timeline, transparent pricing — every time.</p>
+  <h2 class="section-h2">We are not just a studio.<br>We are your <em>visual team.</em></h2>
+  <p class="section-lead">One brief, one point of contact, predictable timeline, transparent pricing.</p>
 
   <div class="pos-grid">
     <div class="pos-card reveal">
-      <div class="pos-card-num">01 / 04</div>
       <h3>Outsourced Visual Department</h3>
-      <p>You get a senior-led production team on retainer — without HR, equipment costs, or onboarding. Brief us once, we handle the rest. Your brand stays consistent across every asset, every month.</p>
+      <p>You get a senior-led production team on retainer without HR, equipment costs, or onboarding. Brief us once, we handle the rest. Your brand stays consistent across every asset, every month.</p>
     </div>
     <div class="pos-card reveal">
-      <div class="pos-card-num">02 / 04</div>
-      <h3>Premium & Luxury Only</h3>
-      <p>We work exclusively in the premium segment. Luxury real estate developers in Dubai, New York, Western Europe. DTC brands with serious visual standards. We do not compete on price — we compete on output quality.</p>
+      <h3>Premium & Luxury</h3>
+      <p>We work exclusively in the premium segment. Luxury real estate developers all around the world. DTC brands with serious visual standards. We do not compete on price — we compete on output quality.</p>
     </div>
     <div class="pos-card reveal">
-      <div class="pos-card-num">03 / 04</div>
       <h3>AI + CGI — The Right Tool for Each Job</h3>
       <p>AI for speed, iteration, and campaign scale. Classical 3D CGI for architectural accuracy, photorealism, and assets that require exact dimensions and materials. We never use AI where it cuts quality.</p>
     </div>
     <div class="pos-card reveal">
-      <div class="pos-card-num">04 / 04</div>
       <h3>Fixed Scope. Fixed Price. No Surprises.</h3>
-      <p>Every engagement starts with a written scope, timeline, and price. Revisions are defined upfront — 2 rounds included. No hourly billing. No "it got more complex" conversations mid-project.</p>
+      <p>Every engagement starts with a written scope, timeline, and price. Revisions are defined upfront — 2 rounds included.</p>
     </div>
   </div>
 </section>
@@ -979,74 +963,30 @@ footer {
 <section id="services">
   <div class="section-tag">What we do</div>
   <h2 class="section-h2">Two disciplines.<br><em>One standard.</em></h2>
-  <p class="section-lead">We chose two directions and went deep — not wide. Premium architectural CGI and AI-driven visual campaigns. Nothing else.</p>
+  <p class="section-lead">Premium architectural CGI and AI-driven visual campaigns. Nothing else.</p>
 
   <div class="services-grid">
     <!-- Archviz -->
     <div class="service-block reveal">
-      <div class="service-block-header">
-        <div class="service-tag">01 — Architectural CGI</div>
-        <div class="service-badge">Project</div>
-      </div>
       <h3>Premium Archviz</h3>
-      <p>Photorealistic exterior and interior visualisation for developers, architecture bureaus, and real estate agencies. Every render is built from correct dimensions and materials — not AI-approximated. Suitable for sales, investor decks, planning approval, and prestige marketing.</p>
+      <p>Photorealistic exterior and interior visualisation for developers, architecture bureaus, and real estate agencies. Every render is built from correct dimensions and materials, not AI-approximated.</p>
       <ul class="service-deliverables">
-        <li>Exterior renders — facade, aerial, site context</li>
-        <li>Interior renders — key units, amenity, lobby</li>
-        <li>Animated walkthroughs — 60–90 sec</li>
+        <li>Exterior renders</li>
+        <li>Interior renders</li>
+        <li>Animated walkthroughs</li>
         <li>360° panoramas for virtual tours</li>
-        <li>Day / dusk / night lighting variants</li>
-        <li>Material and colour alternatives</li>
       </ul>
     </div>
 
     <!-- AI Campaigns -->
-    <div class="service-block reveal">
-      <div class="service-block-header">
-        <div class="service-tag">02 — AI Visual Campaigns</div>
-        <div class="service-badge">Retainer</div>
-      </div>
+    <div class="service-block reveal" style="border-right:none;">
       <h3>AI Visual Production</h3>
-      <p>Monthly visual content at scale — product packshots, fashion lookbooks, campaign imagery, lifestyle scenes — without physical shoots. We manage the creative direction, AI pipeline, and post-production. You get ready-to-publish assets in every format you need.</p>
+      <p>Product packshots, fashion lookbooks, campaign imagery, lifestyle scenes without physical shoots. We manage the creative direction, AI pipeline, and post-production. You get ready-to-publish assets in every format you need.</p>
       <ul class="service-deliverables">
-        <li>Product packshots — white bg, lifestyle, detail</li>
+        <li>Product packshots</li>
         <li>Fashion lookbooks and AI model campaigns</li>
-        <li>Campaign imagery — social, e-com, paid ads</li>
+        <li>Campaign imagery</li>
         <li>Background and scene generation</li>
-        <li>Multi-format export — Instagram, TikTok, PDP</li>
-        <li>A/B visual variants for performance testing</li>
-      </ul>
-    </div>
-
-    <!-- Add-on -->
-    <div class="service-block reveal" style="border-bottom:none;">
-      <div class="service-block-header">
-        <div class="service-tag">03 — Add-on</div>
-        <div class="service-badge">On request</div>
-      </div>
-      <h3>AI Concept Preview</h3>
-      <p>Before any CGI production begins, we deliver an AI-generated direction preview within 24–48 hours. You approve the mood, composition, and style before we build anything. This eliminates expensive late-stage revisions.</p>
-      <ul class="service-deliverables">
-        <li>Mood and direction alignment before production</li>
-        <li>3–5 concept directions per brief</li>
-        <li>Delivered in 24–48 hours from brief</li>
-        <li>Included free in all retainer plans</li>
-      </ul>
-    </div>
-
-    <!-- White label -->
-    <div class="service-block reveal" style="border-bottom:none; border-right:none;">
-      <div class="service-block-header">
-        <div class="service-tag">04 — White Label</div>
-        <div class="service-badge">Agencies</div>
-      </div>
-      <h3>Agency Overflow Capacity</h3>
-      <p>We work as a silent production partner for creative and marketing agencies. Your client never knows we exist. Fixed NDA, consistent quality, reliable turnaround — for when your team is at capacity during campaign peaks.</p>
-      <ul class="service-deliverables">
-        <li>Full NDA and white-label agreement standard</li>
-        <li>Overflow CGI and AI production</li>
-        <li>Pitch-phase fast concept turnaround</li>
-        <li>No long-term commitment required</li>
       </ul>
     </div>
   </div>
@@ -1206,114 +1146,29 @@ footer {
 <!-- PROCESS -->
 <section id="process">
   <div class="section-tag">How it works</div>
-  <h2 class="section-h2">Clear process.<br><em>Zero ambiguity.</em></h2>
-  <p class="section-lead">From first contact to delivered assets — you know exactly what happens, when, and who is responsible.</p>
+  <h2 class="section-h2">Clear process.</h2>
+  <p class="section-lead">From first contact to delivered assets, you know exactly what happens, when, and who is responsible.</p>
 
   <div class="process-steps reveal">
     <div class="process-step">
-      <div class="step-num">01</div>
       <div class="step-title">Brief & Scope</div>
-      <div class="step-body">You send a brief. We send back a written scope, price, and timeline within 48 hours. No calls required to get a number.</div>
+      <div class="step-body">You send a brief. We send back a written scope, price, and timeline.</div>
     </div>
     <div class="process-step">
-      <div class="step-num">02</div>
       <div class="step-title">AI Concept Preview</div>
-      <div class="step-body">Before production starts, you receive AI-generated direction options in 24–48h. We align on mood, composition, and style. This prevents expensive late changes.</div>
+      <div class="step-body">Before production starts, you receive AI-generated direction options.</div>
     </div>
     <div class="process-step">
-      <div class="step-num">03</div>
       <div class="step-title">Production</div>
-      <div class="step-body">CGI or AI pipeline — depending on deliverable. You receive progress updates at defined milestones. No silence, no uncertainty about status.</div>
+      <div class="step-body">CGI or AI pipeline depending on deliverable. You receive progress updates at defined milestones.</div>
     </div>
     <div class="process-step">
-      <div class="step-num">04</div>
       <div class="step-title">2 Revision Rounds</div>
-      <div class="step-body">Two full revision rounds included in every project. Feedback collected in one batch per round — no scattered email chains. Additional rounds at a fixed rate agreed in advance.</div>
+      <div class="step-body">Two full revision rounds included in every project. Feedback collected in one batch per round. Additional rounds at a fixed rate agreed in advance.</div>
     </div>
     <div class="process-step" style="border-right:none;">
-      <div class="step-num">05</div>
       <div class="step-title">Final Delivery</div>
-      <div class="step-body">Assets delivered in all agreed formats via shared drive. Source files available under separate agreement. Invoice on delivery.</div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY US -->
-<section id="why">
-  <div class="section-tag">Why KIVX</div>
-  <h2 class="section-h2">What separates us<br>from <em>everyone else.</em></h2>
-  <p class="section-lead">Not a list of buzzwords. These are the things that actually affect your project.</p>
-
-  <div class="why-grid">
-    <div class="why-card reveal">
-      <div class="why-card-num">01</div>
-      <h3>You talk to the people doing the work</h3>
-      <p>No account manager, no project coordinator. You communicate directly with the senior team that produces your assets. Faster decisions, less translation loss.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-card-num">02</div>
-      <h3>Fixed price. Always.</h3>
-      <p>We quote before we start. We do not bill by the hour. We do not adjust the price because "it got more complex." If scope grows beyond the brief — we tell you before we proceed.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-card-num">03</div>
-      <h3>AI where it accelerates. CGI where it matters.</h3>
-      <p>We do not use AI to cut corners on architectural work. We use it to speed up campaign production and concept iteration. The right tool for each job — every time.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-card-num">04</div>
-      <h3>Premium segment expertise</h3>
-      <p>We understand the visual standards of luxury real estate, high-end DTC brands, and premium architecture bureaus. We know what those clients' clients expect to see.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-card-num">05</div>
-      <h3>Concept preview before you commit</h3>
-      <p>Every project starts with an AI direction preview in 24–48h. You see the creative direction before full production begins. No surprises at delivery stage.</p>
-    </div>
-    <div class="why-card reveal">
-      <div class="why-card-num">06</div>
-      <h3>Retainer = your visual department</h3>
-      <p>Retainer clients get priority queue, a dedicated contact, and brand consistency across every asset. It is more cost-effective than in-house and faster than project-by-project.</p>
-    </div>
-  </div>
-</section>
-
-<!-- MARKETS -->
-<section id="markets">
-  <div class="section-tag">Who we work with</div>
-  <h2 class="section-h2">Three markets.<br><em>One standard.</em></h2>
-  <p class="section-lead">We target premium clients in three regions. If you operate in luxury real estate, premium DTC, or work with high-value visual briefs — we are built for you.</p>
-
-  <div class="markets-grid">
-    <div class="market-card reveal">
-      <div class="market-flag">UAE — Dubai · Abu Dhabi</div>
-      <h3>Gulf Real Estate & Luxury</h3>
-      <p>Premium and ultra-premium residential and mixed-use developers. Brands requiring high-volume campaign content for regional and international marketing. Fast-growth projects with demanding visual standards.</p>
-      <div class="market-clients">
-        Residential developers &nbsp;/&nbsp; Luxury retail<br>
-        High-end architecture bureaus<br>
-        Investor presentation decks
-      </div>
-    </div>
-    <div class="market-card reveal">
-      <div class="market-flag">USA — New York · LA · Miami</div>
-      <h3>US Real Estate & DTC Brands</h3>
-      <p>Luxury residential developers with sales-focused visual needs. DTC brands spending $8k–$25k per product shoot who want to reduce cost without reducing quality. Creative agencies looking for reliable overflow production.</p>
-      <div class="market-clients">
-        Luxury residential &nbsp;/&nbsp; DTC e-commerce<br>
-        Fashion &amp; lifestyle brands<br>
-        Creative agencies (white-label)
-      </div>
-    </div>
-    <div class="market-card reveal">
-      <div class="market-flag">Western Europe — UK · Germany · Nordics</div>
-      <h3>European Architecture & Brands</h3>
-      <p>Architecture bureaus, boutique developers, and premium product brands with ongoing visual content requirements. Stable long-term B2B relationships with clients who value quality and consistency.</p>
-      <div class="market-clients">
-        Architecture bureaus &nbsp;/&nbsp; Developers<br>
-        Premium consumer brands<br>
-        Marketing agencies (B2B)
-      </div>
+      <div class="step-body">Assets delivered in all agreed formats.</div>
     </div>
   </div>
 </section>
@@ -1323,23 +1178,15 @@ footer {
   <div class="contact-left">
     <div class="section-tag">Contact</div>
     <h2 class="contact-h2">Start a<br><em>conversation.</em></h2>
-    <p class="contact-lead">Tell us what you are working on. We will send a written scope and price within 48 hours — no calls required to get a number.</p>
+    <p class="contact-lead">Tell us what you are working on.</p>
     <ul class="contact-items">
       <li>
         <span class="contact-item-label">Email</span>
         <span class="contact-item-val"><a href="mailto:info@kivxgroup.com">info@kivxgroup.com</a></span>
       </li>
       <li>
-        <span class="contact-item-label">LinkedIn</span>
-        <span class="contact-item-val"><a href="https://linkedin.com/company/kivxgroup" target="_blank">linkedin.com/company/kivxgroup</a></span>
-      </li>
-      <li>
         <span class="contact-item-label">Based in</span>
         <span class="contact-item-val">Warsaw, Poland<br>Available globally</span>
-      </li>
-      <li>
-        <span class="contact-item-label">Response</span>
-        <span class="contact-item-val">Within 24 hours<br>Written scope within 48h</span>
       </li>
     </ul>
   </div>
@@ -1378,20 +1225,20 @@ footer {
         ✓ Brief received. You will hear from us within 24 hours.
       </div>
       <button type="submit" class="form-submit">Send brief →</button>
-      <p style="font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--muted);margin-top:1rem;line-height:1.6;">
-        We read every message. No auto-replies. You will hear from a real person within 24 hours.
-      </p>
     </form>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-logo">KIVX GROUP</span>
+  <a class="footer-logo-link" href="#">
+    <img src="favicon.png" alt="logo" class="nav-logo-img">
+    KIVX GROUP
+  </a>
   <ul class="footer-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://www.linkedin.com/company/kivx-group/" target="_blank">LinkedIn</a></li>
+    <li><a href="https://www.behance.net/kivxgroup" target="_blank">Behance</a></li>
+    <li><a href="https://www.instagram.com/kivx.group/" target="_blank">Instagram</a></li>
   </ul>
   <span class="footer-copy">© 2026 KIVX GROUP. Warsaw, Poland.</span>
 </footer>
