@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIVX GROUP — Outsourced Visual Department</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <style>
 :root {
   --ink:     #0C0B09;
@@ -17,11 +18,11 @@
   --sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* ── FONT SIZES — единственное место где задаются ── */
-  --fs-xs:      10px;  /* навигация, теги, копирайт */
-  --fs-sm:      12px;  /* кнопки */
+  --fs-xs:      11px;  /* копирайт, мелкие подписи */
+  --fs-sm:      12px;  /* кнопки, теги секций */
   --fs-base:    16px;  /* основной текст */
   --fs-heading: 20px;  /* заголовки карточек h3 */
-  --fs-hero:    30px;  /* главные заголовки h1, h2 */
+  --fs-hero:    50px;  /* главные заголовки h1, h2 */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,9 +42,12 @@ h3, h4, h5, h6 { font-size: var(--fs-heading); font-weight: 500; }
 p, li { font-size: var(--fs-base); }
 
 /* Навигация */
-.nav-links a, .section-tag, .service-tag,
-.footer-copy, .footer-links a,
+.nav-links a, .footer-copy,
 .contact-item-label { font-size: var(--fs-xs); }
+
+/* Теги секций */
+.section-tag, .service-tag,
+.footer-links a { font-size: var(--fs-sm); }
 
 /* Кнопки */
 .nav-cta, .btn-primary, .btn-secondary,
