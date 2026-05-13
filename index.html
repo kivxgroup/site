@@ -17,19 +17,35 @@
   --serif:   'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mono:    'Helvetica Neue', Helvetica, Arial, sans-serif;
   --sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --fs-xs:   10px;
+  --fs-base:  12px;
+  --fs-heading: 15px;
+  --fs-hero:  30px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 12px; }
 
 body {
   font-family: var(--sans);
+  font-size: var(--fs-base);
   background: var(--paper);
   color: var(--ink);
   line-height: 1.6;
   overflow-x: hidden;
 }
+
+/* ── GLOBAL FONT SIZE OVERRIDES ── */
+p, li, a, span, label, input, textarea, select, button { font-size: var(--fs-base); }
+h1 { font-size: var(--fs-hero) !important; }
+h2 { font-size: var(--fs-hero) !important; }
+h3 { font-size: var(--fs-heading) !important; }
+h4, h5, h6 { font-size: var(--fs-heading) !important; }
+.section-tag, .service-tag, .footer-copy, .step-num,
+.nav-links a, .footer-links a, .contact-item-label,
+.price-badge, .process-step .step-num { font-size: var(--fs-xs) !important; }
+nav, .nav-logo, .nav-cta { font-size: var(--fs-base) !important; }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 3px; }
@@ -177,13 +193,13 @@ nav {
 }
 
 .hero-h1 {
-  font-family: var(--serif);
-  font-size: clamp(3.2rem, 6.5vw, 7rem);
+  font-family: var(--sans);
+  font-size: 30px !important;
   font-weight: 300;
-  line-height: 1.05;
-  letter-spacing: -.02em;
+  line-height: 1.15;
+  letter-spacing: -.01em;
   color: #ffffff;
-  margin-bottom: 2.4rem;
+  margin-bottom: 1.5rem;
 }
 .hero-h1 em {
   font-style: italic;
@@ -192,7 +208,7 @@ nav {
 
 .hero-sub {
   font-family: var(--sans);
-  font-size: 1.05rem;
+  font-size: 12px !important;
   color: rgba(255,255,255,0.85);
   max-width: 560px;
   line-height: 1.75;
@@ -286,17 +302,17 @@ section { padding: 8rem 3rem; }
 }
 
 .section-h2 {
-  font-family: var(--serif);
-  font-size: clamp(2.4rem, 4vw, 4.5rem);
+  font-family: var(--sans);
+  font-size: 30px !important;
   font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -.02em;
+  line-height: 1.2;
+  letter-spacing: -.01em;
   margin-bottom: 1.6rem;
 }
 .section-h2 em { font-style: italic; color: var(--accent2); }
 
 .section-lead {
-  font-size: 1rem;
+  font-size: 12px !important;
   color: var(--muted);
   max-width: 600px;
   line-height: 1.8;
