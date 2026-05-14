@@ -497,8 +497,15 @@ section { padding: 8rem 3rem; }
   padding: 2.8rem;
   position: relative;
   transition: background .3s;
+  display: flex;
+  flex-direction: column;
 }
 .price-card:hover { background: #221f1a; }
+
+.price-card .price-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+}
 
 .price-card.featured {
   background: #1e1b16;
@@ -519,9 +526,12 @@ section { padding: 8rem 3rem; }
 
 .price-amount {
   font-family: var(--serif);
-  font-size: 3rem; font-weight: 300;
+  font-size: 2.5rem; font-weight: 300;
   color: var(--paper); line-height: 1;
   margin-bottom: .3rem;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: flex-end;
 }
 .price-amount span {
   font-family: var(--sans);
@@ -556,7 +566,6 @@ section { padding: 8rem 3rem; }
 }
 
 .price-footer {
-  margin-top: 2rem;
 }
 
 .price-cta {
@@ -591,6 +600,13 @@ section { padding: 8rem 3rem; }
 .pricing-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(200,169,110,.15);
+}
+
+.pricing-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 1px;
   background: rgba(200,169,110,.15);
 }
@@ -876,7 +892,7 @@ footer {
   .hero { padding: 0 1.5rem; }
   .hero-stats { gap: 2rem; }
   section { padding: 5rem 1.5rem; }
-  .pos-grid, .services-grid, .pricing-grid, .pricing-grid-4, .process-steps,
+  .pos-grid, .services-grid, .pricing-grid, .pricing-grid-4, .pricing-grid-5, .process-steps,
   .why-grid, .markets-grid { grid-template-columns: 1fr; }
   .service-block:nth-child(even) { border-right: 1px solid var(--line); }
   .pos-card:nth-child(even) { }
@@ -1002,11 +1018,11 @@ footer {
   </div>
 
   <!-- Archviz cards -->
-  <div class="pricing-grid-4 reveal">
+  <div class="pricing-grid-5 reveal">
 
     <div class="price-card">
       <div class="price-label">Exterior</div>
-      <h3>Standard</h3>
+      <h3>Exterior</h3>
       <div class="price-amount"><span>€</span>1,200</div>
       <div class="price-turnaround">10–14 days</div>
       <div class="price-divider"></div>
@@ -1022,28 +1038,9 @@ footer {
       </div>
     </div>
 
-    <div class="price-card featured">
-      <div class="price-label">Most requested</div>
-      <h3>Exterior Premium</h3>
-      <div class="price-amount"><span>€</span>2,800</div>
-      <div class="price-turnaround">12–18 days</div>
-      <div class="price-divider"></div>
-      <ul class="price-features">
-        <li>3–6 views</li>
-        <li>Day + dusk lighting</li>
-        <li>Aerial perspective</li>
-        <li>Full context scene</li>
-        <li>2 revision rounds</li>
-        <li>All agreed formats</li>
-      </ul>
-      <div class="price-footer">
-        <a href="#contact" class="price-cta">Get a quote</a>
-      </div>
-    </div>
-
     <div class="price-card">
       <div class="price-label">Interior</div>
-      <h3>Key Unit</h3>
+      <h3>Interior</h3>
       <div class="price-amount"><span>€</span>1,500</div>
       <div class="price-turnaround">10–14 days</div>
       <div class="price-divider"></div>
@@ -1060,15 +1057,14 @@ footer {
     </div>
 
     <div class="price-card">
-      <div class="price-label">Interior</div>
-      <h3>Full Package</h3>
-      <div class="price-amount"><span>€</span>4,500</div>
-      <div class="price-turnaround">18–25 days</div>
+      <div class="price-label">Animation</div>
+      <h3>Walkthrough</h3>
+      <div class="price-amount"><span>€</span>5,500</div>
+      <div class="price-turnaround">20–30 days</div>
       <div class="price-divider"></div>
       <ul class="price-features">
-        <li>8–12 views</li>
-        <li>Multiple rooms</li>
-        <li>Material variants</li>
+        <li>60 sec, interior or exterior</li>
+        <li>Music + sound optional</li>
         <li>2 revision rounds</li>
         <li>All agreed formats</li>
       </ul>
@@ -1077,7 +1073,45 @@ footer {
       </div>
     </div>
 
+    <div class="price-card">
+      <div class="price-label">Interactive</div>
+      <h3>Panorama 360°</h3>
+      <div class="price-amount"><span>€</span>1,800</div>
+      <div class="price-turnaround">12–16 days</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>3 locations</li>
+        <li>Interactive, web-ready</li>
+        <li>2 revision rounds</li>
+        <li>All agreed formats</li>
+      </ul>
+      <div class="price-footer">
+        <a href="#contact" class="price-cta">Get a quote</a>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-label">Complete</div>
+      <h3>Full Pack</h3>
+      <div class="price-amount">Custom</div>
+      <div class="price-turnaround">Custom timeline</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Exterior + Interior</li>
+        <li>Walkthrough included</li>
+        <li>360° Panorama included</li>
+        <li>All agreed formats</li>
+      </ul>
+      <div class="price-footer">
+        <a href="#contact" class="price-cta">Let's talk</a>
+      </div>
+    </div>
+
   </div>
+
+  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(245,242,236,.35);margin-top:2rem;margin-bottom:0;">
+    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,169,110,.4);">get in touch</a> and we will provide an individual quote.
+  </p>
 
   <!-- Divider -->
   <div style="height:2px; background:rgba(200,169,110,.6); margin: 5rem 0;"></div>
@@ -1161,6 +1195,10 @@ footer {
       </div>
     </div>
   </div>
+
+  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(245,242,236,.35);margin-top:2rem;">
+    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,169,110,.4);">get in touch</a> and we will provide an individual quote.
+  </p>
 
 </section>
 
