@@ -147,31 +147,6 @@ nav {
   line-height: 1.75;
 }
 
-/* ── FILTERS ── */
-.filters {
-  padding: 2.5rem 3rem;
-  display: flex; gap: 1rem; flex-wrap: wrap;
-  border-bottom: 1px solid var(--line);
-}
-
-.filter-btn {
-  font-family: var(--sans);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--line);
-  padding: .5rem 1.2rem;
-  cursor: pointer;
-  transition: all .2s;
-}
-.filter-btn:hover,
-.filter-btn.active {
-  color: var(--ink);
-  border-color: var(--accent);
-  background: var(--warm);
-}
-
 /* ── GRID ── */
 .portfolio-section { padding: 3rem; }
 
@@ -390,18 +365,10 @@ footer {
   <p class="page-lead">Architectural CGI, walkthroughs, AI visuals and product visualizations for developers and brands worldwide.</p>
 </div>
 
-<!-- FILTERS -->
-<div class="filters">
-  <button class="filter-btn active" data-filter="all">All work</button>
-  <button class="filter-btn" data-filter="portfolio">CGI Renders</button>
-  <button class="filter-btn" data-filter="walkthroughs">Walkthroughs</button>
-  <button class="filter-btn" data-filter="ai-visual">AI Visuals</button>
-  <button class="filter-btn" data-filter="product-viz">Product Viz</button>
-</div>
+
 
 <!-- GRID -->
 <main class="portfolio-section">
-  <div class="section-label" id="grid-label">Loading work…</div>
   <div class="grid" id="main-grid"></div>
 </main>
 
@@ -433,18 +400,11 @@ footer {
 
 <script>
 const CLOUD = 'kivxgroup';
-const FOLDERS = ['portfolio', 'walkthroughs', 'cgi', 'ai-visual', 'product-viz'];
-const LABELS = {
-  portfolio: 'CGI Renders',
-  walkthroughs: 'Walkthroughs',
-  cgi: 'Interiors',
-  'ai-visual': 'AI Visuals',
-  'product-viz': 'Product Viz'
-};
+const FOLDER = 'portfolio';
 
-async function fetchFolder(folder) {
-  const imageUrl = `https://res.cloudinary.com/${CLOUD}/image/list/${folder}.json`;
-  const videoUrl = `https://res.cloudinary.com/${CLOUD}/video/list/${folder}.json`;
+async function fetchFolder() {
+  const imageUrl = `https://res.cloudinary.com/${CLOUD}/image/list/${FOLDER}.json`;
+  const videoUrl = `https://res.cloudinary.com/${CLOUD}/video/list/${FOLDER}.json`;
 
   async function fetchList(url, type) {
     try {
@@ -452,19 +412,20 @@ async function fetchFolder(folder) {
       if (!r.ok) return [];
       const data = await r.json();
       return (data.resources || []).map(res => {
+        const tags = res.tags || [];
         if (type === 'video') {
           const base = `https://res.cloudinary.com/${CLOUD}/video/upload`;
           return {
             src: `${base}/q_auto/${res.public_id}.${res.format}`,
             poster: `${base}/so_0,f_jpg,q_auto,w_800/${res.public_id}.jpg`,
-            type: 'video', folder
+            type: 'video', tags
           };
         } else {
           const base = `https://res.cloudinary.com/${CLOUD}/image/upload`;
           return {
             src: `${base}/q_auto,f_auto,w_2000/${res.public_id}.${res.format}`,
             thumb: `${base}/q_auto,f_auto,w_800/${res.public_id}.${res.format}`,
-            type: 'image', folder
+            type: 'image', tags
           };
         }
       });
@@ -487,18 +448,13 @@ async function loadAll() {
   const label = document.getElementById('grid-label');
   grid.innerHTML = '<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>';
 
-  const results = await Promise.all(FOLDERS.map(f => fetchFolder(f)));
-  allItems = results.flat();
+  allItems = await fetchFolder();
   filtered = [...allItems];
-
-  label.textContent = `${allItems.length} works`;
   renderGrid(filtered);
 }
 
 function renderGrid(items) {
   const grid = document.getElementById('main-grid');
-  const label = document.getElementById('grid-label');
-  label.textContent = `${items.length} work${items.length !== 1 ? 's' : ''}`;
 
   if (!items.length) {
     grid.innerHTML = '<div class="empty-state">No works found</div>';
@@ -523,7 +479,7 @@ function renderGrid(items) {
       const img = document.createElement('img');
       img.src = item.thumb;
       img.loading = 'lazy'; img.decoding = 'async';
-      img.alt = LABELS[item.folder] || 'Project';
+      img.alt = item.tags[0] || 'Project';
       el.appendChild(img);
     }
 
@@ -531,7 +487,7 @@ function renderGrid(items) {
     overlay.className = 'grid-overlay';
     const lbl = document.createElement('span');
     lbl.className = 'grid-overlay-label';
-    lbl.textContent = LABELS[item.folder] || item.folder;
+    lbl.textContent = item.tags.join(', ') || 'Project';
     overlay.appendChild(lbl);
     el.appendChild(overlay);
 
@@ -539,17 +495,6 @@ function renderGrid(items) {
     grid.appendChild(el);
   });
 }
-
-// FILTERS
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.filter;
-    filtered = f === 'all' ? [...allItems] : allItems.filter(i => i.folder === f);
-    renderGrid(filtered);
-  });
-});
 
 // LIGHTBOX
 const lb = document.getElementById('lightbox');
