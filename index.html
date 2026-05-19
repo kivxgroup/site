@@ -70,10 +70,14 @@ p, li { font-size: var(--fs-base); }
 .photo-strip {
   display: flex;
   height: 100%;
-  transition: transform .5s cubic-bezier(.4,0,.2,1);
-  will-change: transform;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  white-space: nowrap;
+  will-change: scroll-position;
 }
-
+.photo-strip::-webkit-scrollbar { display: none; }
 .photo-strip img {
   height: 100%;
   width: auto;
@@ -1368,41 +1372,11 @@ footer {
   const CLOUD = 'kivxgroup';
   const FOLDER = 'hero-line';
 
+  const wrap  = document.querySelector('.photo-strip-wrap');
   const strip = document.getElementById('photoStrip');
   const prev  = document.getElementById('stripPrev');
   const next  = document.getElementById('stripNext');
   if (!strip) return;
-
-  let offset = 0;
-  let total = 0;
-  let isAnimating = false;
-
-  function getImgWidth() {
-    const img = strip.querySelector('img');
-    return img ? img.offsetWidth : 400;
-  }
-
-  function setPosition(animate) {
-    const w = getImgWidth();
-    strip.style.transition = animate ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none';
-    strip.style.transform = `translateX(-${offset * w}px)`;
-  }
-
-  function go(dir) {
-    if (isAnimating || total === 0) return;
-    isAnimating = true;
-    offset += dir;
-    setPosition(true);
-  }
-
-  strip.addEventListener('transitionend', () => {
-    if (offset >= total * 2) { offset = total; setPosition(false); }
-    else if (offset < total) { offset = total * 2 - 1; setPosition(false); }
-    isAnimating = false;
-  });
-
-  prev.addEventListener('click', () => go(-1));
-  next.addEventListener('click', () => go(1));
 
   async function loadStrip() {
     try {
@@ -1413,7 +1387,6 @@ footer {
       const resources = data.resources || [];
       if (!resources.length) return;
 
-      total = resources.length;
       const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_560`;
 
       // Triple for infinite loop
@@ -1427,10 +1400,42 @@ footer {
         strip.appendChild(img);
       });
 
-      offset = total;
-      setTimeout(() => setPosition(false), 50);
+      // After images load, scroll to middle set
+      const firstImg = strip.querySelector('img');
+      function initScroll() {
+        const total = resources.length;
+        let midOffset = 0;
+        const imgs = strip.querySelectorAll('img');
+        for (let i = 0; i < total; i++) midOffset += imgs[i].offsetWidth;
+        strip.scrollLeft = midOffset;
+      }
+
+      firstImg.addEventListener('load', initScroll);
+      if (firstImg.complete) initScroll();
+
     } catch(e) { console.error('Strip load error:', e); }
   }
+
+  function scrollBy(dir) {
+    const img = strip.querySelector('img');
+    if (!img) return;
+    const step = img.offsetWidth;
+    strip.scrollBy({ left: dir * step, behavior: 'smooth' });
+
+    // Infinite loop: if near end jump to middle
+    setTimeout(() => {
+      const total = strip.querySelectorAll('img').length / 3;
+      const imgs = strip.querySelectorAll('img');
+      let oneSetW = 0;
+      for (let i = 0; i < total; i++) oneSetW += imgs[i].offsetWidth;
+
+      if (strip.scrollLeft >= oneSetW * 2) strip.scrollLeft -= oneSetW;
+      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSetW;
+    }, 520);
+  }
+
+  prev.addEventListener('click', () => scrollBy(-1));
+  next.addEventListener('click', () => scrollBy(1));
 
   loadStrip();
 })();
