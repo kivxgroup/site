@@ -1454,9 +1454,10 @@ footer {
   }
 
   strip.addEventListener('wheel', (e) => {
+    e.preventDefault();
     momentum += e.deltaY * 0.8;
     if (!rafId) rafId = requestAnimationFrame(applyMomentum);
-  }, { passive: true });
+  });
 
   loadStrip();
 })();
