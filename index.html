@@ -1443,11 +1443,10 @@ footer {
     strip.scrollLeft += momentum;
     momentum *= 0.92;
 
-    // Infinite loop check
     const imgs = strip.querySelectorAll('img');
-    const total = imgs.length / 3;
+    const count = imgs.length / 3;
     let oneSet = 0;
-    for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
+    for (let i = 0; i < count; i++) oneSet += imgs[i].offsetWidth;
     if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
     else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
 
@@ -1455,10 +1454,9 @@ footer {
   }
 
   strip.addEventListener('wheel', (e) => {
-    e.preventDefault();
     momentum += e.deltaY * 0.8;
     if (!rafId) rafId = requestAnimationFrame(applyMomentum);
-  }, { passive: false });
+  }, { passive: true });
 
   loadStrip();
 })();
