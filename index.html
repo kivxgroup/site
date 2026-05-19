@@ -58,7 +58,56 @@ p, li { font-size: var(--fs-base); }
 /* Логотип */
 .footer-logo-link { font-size: var(--fs-sm); }
 
-/* ── SCROLLBAR ── */
+/* ── PHOTO STRIP ── */
+.photo-strip-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  height: 280px;
+}
+
+.photo-strip {
+  display: flex;
+  height: 100%;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+
+.photo-strip img {
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.strip-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: border-color .2s, background .2s;
+  z-index: 10;
+  line-height: 1;
+}
+.strip-arrow:hover {
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.08);
+}
+.strip-arrow-left  { left: 1.5rem; }
+.strip-arrow-right { right: 1.5rem; }
+
+
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--warm); }
 ::-webkit-scrollbar-thumb { background: var(--accent); }
@@ -951,6 +1000,15 @@ footer {
   </div>
 </header>
 
+<!-- PHOTO STRIP -->
+<div class="photo-strip-wrap">
+  <div class="photo-strip" id="photoStrip">
+    <!-- images injected by JS -->
+  </div>
+  <button class="strip-arrow strip-arrow-left" id="stripPrev" aria-label="Previous">&#8592;</button>
+  <button class="strip-arrow strip-arrow-right" id="stripNext" aria-label="Next">&#8594;</button>
+</div>
+
 <!-- POSITIONING -->
 <section id="positioning">
   <div class="section-tag">Who we are</div>
@@ -1305,7 +1363,80 @@ footer {
 </footer>
 
 <script>
-// Intersection Observer for reveal animations
+// ── PHOTO STRIP ──
+(function() {
+  const CLOUD_BASE = 'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/';
+  const IMAGES = [
+    '01','02','03','04','05','06','07','08','09','10'
+  ];
+
+  const strip = document.getElementById('photoStrip');
+  const prev  = document.getElementById('stripPrev');
+  const next  = document.getElementById('stripNext');
+  if (!strip) return;
+
+  let current = 0;
+  let imgsLoaded = [];
+
+  // Build triplet: [...tail, ...all, ...head] for infinite loop illusion
+  function buildStrip() {
+    strip.innerHTML = '';
+    imgsLoaded = [];
+    const all = [...IMAGES, ...IMAGES, ...IMAGES]; // triple for seamless loop
+    all.forEach((name, i) => {
+      const img = document.createElement('img');
+      img.src = CLOUD_BASE + name + '.jpg';
+      img.alt = 'KIVX portfolio';
+      img.draggable = false;
+      strip.appendChild(img);
+      imgsLoaded.push(img);
+    });
+  }
+
+  buildStrip();
+
+  const total = IMAGES.length;
+  let offset = total; // start in the middle set
+  let isAnimating = false;
+
+  function getImgWidth() {
+    const img = strip.querySelector('img');
+    return img ? img.offsetWidth : 400;
+  }
+
+  function setPosition(animate) {
+    const w = getImgWidth();
+    strip.style.transition = animate ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none';
+    strip.style.transform = `translateX(-${offset * w}px)`;
+  }
+
+  function go(dir) {
+    if (isAnimating) return;
+    isAnimating = true;
+    offset += dir;
+    setPosition(true);
+  }
+
+  strip.addEventListener('transitionend', () => {
+    // Jump silently if we've gone past the middle set
+    if (offset >= total * 2) {
+      offset = total;
+      setPosition(false);
+    } else if (offset < total) {
+      offset = total * 2 - 1;
+      setPosition(false);
+    }
+    isAnimating = false;
+  });
+
+  prev.addEventListener('click', () => go(-1));
+  next.addEventListener('click', () => go(1));
+
+  // Init position without animation
+  window.addEventListener('load', () => setPosition(false));
+  setTimeout(() => setPosition(false), 100);
+})();
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
