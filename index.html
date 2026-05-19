@@ -1000,15 +1000,6 @@ footer {
   </div>
 </header>
 
-<!-- PHOTO STRIP -->
-<div class="photo-strip-wrap">
-  <div class="photo-strip" id="photoStrip">
-    <!-- images injected by JS -->
-  </div>
-  <button class="strip-arrow strip-arrow-left" id="stripPrev" aria-label="Previous">&#8592;</button>
-  <button class="strip-arrow strip-arrow-right" id="stripNext" aria-label="Next">&#8594;</button>
-</div>
-
 <!-- POSITIONING -->
 <section id="positioning">
   <div class="section-tag">Who we are</div>
@@ -1034,6 +1025,15 @@ footer {
     </div>
   </div>
 </section>
+
+<!-- PHOTO STRIP -->
+<div class="photo-strip-wrap">
+  <div class="photo-strip" id="photoStrip">
+    <!-- images injected by JS -->
+  </div>
+  <button class="strip-arrow strip-arrow-left" id="stripPrev" aria-label="Previous">&#8592;</button>
+  <button class="strip-arrow strip-arrow-right" id="stripNext" aria-label="Next">&#8594;</button>
+</div>
 
 <!-- SERVICES -->
 <section id="services">
@@ -1367,8 +1367,16 @@ footer {
 (function() {
   const CLOUD_BASE = 'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/';
   const IMAGES = [
-    '01.jpg','02.jpg','03.jpg','04.jpg','05.png',
-    '06.jpg','07.jpg','08.jpg','09.jpg','10.jpg'
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/01',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/02',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/03',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/04',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/05',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/06',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/07',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/08',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/09',
+    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/10',
   ];
 
   const strip = document.getElementById('photoStrip');
@@ -1386,7 +1394,7 @@ footer {
     const all = [...IMAGES, ...IMAGES, ...IMAGES]; // triple for seamless loop
     all.forEach((name, i) => {
       const img = document.createElement('img');
-      img.src = CLOUD_BASE + name;
+      img.src = name;
       img.alt = 'KIVX portfolio';
       img.draggable = false;
       strip.appendChild(img);
