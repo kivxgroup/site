@@ -71,11 +71,10 @@ p, li { font-size: var(--fs-base); }
   display: flex;
   height: 100%;
   overflow-x: scroll;
-  scroll-behavior: smooth;
+  overflow-y: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
   white-space: nowrap;
-  will-change: scroll-position;
 }
 .photo-strip::-webkit-scrollbar { display: none; }
 .photo-strip img {
@@ -1378,6 +1377,22 @@ footer {
   const next  = document.getElementById('stripNext');
   if (!strip) return;
 
+  let setWidth = 0; // ширина одного набора картинок
+
+  function calcSetWidth() {
+    const imgs = strip.querySelectorAll('img');
+    const total = imgs.length / 3;
+    let w = 0;
+    for (let i = 0; i < total; i++) w += imgs[i].offsetWidth;
+    setWidth = w;
+  }
+
+  function loopCheck() {
+    if (!setWidth) return;
+    if (strip.scrollLeft >= setWidth * 2) strip.scrollLeft -= setWidth;
+    else if (strip.scrollLeft <= 0)       strip.scrollLeft += setWidth;
+  }
+
   async function loadStrip() {
     try {
       const url = `https://res.cloudinary.com/${CLOUD}/image/list/${FOLDER}.json`;
@@ -1388,9 +1403,8 @@ footer {
       if (!resources.length) return;
 
       const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_560`;
-      const all = [...resources, ...resources, ...resources];
       strip.innerHTML = '';
-      all.forEach(res => {
+      [...resources, ...resources, ...resources].forEach(res => {
         const img = document.createElement('img');
         img.src = `${base}/${res.public_id}.${res.format}`;
         img.alt = 'KIVX portfolio';
@@ -1398,14 +1412,11 @@ footer {
         strip.appendChild(img);
       });
 
-      // Scroll to middle set after first image loads
+      // После загрузки первой картинки считаем ширину и встаём на средний набор
       const firstImg = strip.querySelector('img');
       function initScroll() {
-        const imgs = strip.querySelectorAll('img');
-        const total = resources.length;
-        let mid = 0;
-        for (let i = 0; i < total; i++) mid += imgs[i].offsetWidth;
-        strip.scrollLeft = mid;
+        calcSetWidth();
+        strip.scrollLeft = setWidth;
       }
       if (firstImg.complete) initScroll();
       else firstImg.addEventListener('load', initScroll);
@@ -1413,63 +1424,34 @@ footer {
     } catch(e) { console.error('Strip error:', e); }
   }
 
-  function getStepWidth() {
+  // Кнопки ← →
+  prev.addEventListener('click', () => {
     const img = strip.querySelector('img');
-    return img ? img.offsetWidth : 400;
-  }
+    const step = img ? img.offsetWidth : 400;
+    strip.scrollLeft -= step;
+    setTimeout(loopCheck, 50);
+  });
+  next.addEventListener('click', () => {
+    const img = strip.querySelector('img');
+    const step = img ? img.offsetWidth : 400;
+    strip.scrollLeft += step;
+    setTimeout(loopCheck, 50);
+  });
 
-  function scrollStep(dir) {
-    strip.scrollBy({ left: dir * getStepWidth(), behavior: 'smooth' });
-    // Infinite loop jump after scroll settles
-    setTimeout(() => {
-      const imgs = strip.querySelectorAll('img');
-      const total = imgs.length / 3;
-      let oneSet = 0;
-      for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
-      if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
-      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
-    }, 520);
-  }
-
-  prev.addEventListener('click', () => scrollStep(-1));
-  next.addEventListener('click', () => scrollStep(1));
-
-  // Mousewheel scroll — attach to wrap so overflow:hidden doesn't swallow the event
-  const wrap = strip.closest('.photo-strip-wrap') || strip.parentElement;
-
-  function getOneSet() {
-    const imgs = strip.querySelectorAll('img');
-    const count = imgs.length / 3;
-    let w = 0;
-    for (let i = 0; i < count; i++) w += imgs[i].offsetWidth;
-    return w;
-  }
-
-  function loopCheck() {
-    const oneSet = getOneSet();
-    if (!oneSet) return;
-    if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
-    else if (strip.scrollLeft <= 0)     strip.scrollLeft += oneSet;
-  }
-
-  let momentum = 0;
-  let rafId = null;
-
-  function applyMomentum() {
-    if (Math.abs(momentum) < 0.5) { rafId = null; return; }
-    strip.scrollLeft += momentum;
-    momentum *= 0.88;
-    loopCheck();
-    rafId = requestAnimationFrame(applyMomentum);
-  }
-
-  wrap.addEventListener('wheel', (e) => {
+  // Колёсико мыши → горизонтальный скролл
+  // listener на wrap (overflow:hidden), скроллим strip внутри
+  const wrap = document.querySelector('.photo-strip-wrap');
+  (wrap || strip).addEventListener('wheel', (e) => {
     e.preventDefault();
-    // normalise across deltaMode: 0=px, 1=lines(~20px), 2=pages(~300px)
-    const factor = e.deltaMode === 2 ? 300 : e.deltaMode === 1 ? 20 : 1;
-    momentum += e.deltaY * factor * 0.6;
-    if (!rafId) rafId = requestAnimationFrame(applyMomentum);
+    const delta = e.deltaMode === 1 ? e.deltaY * 20
+                : e.deltaMode === 2 ? e.deltaY * 300
+                : e.deltaY;
+    strip.scrollLeft += delta;
+    loopCheck();
   }, { passive: false });
+
+  // Следим за скроллом для бесконечного loop (свайп на мобильном)
+  strip.addEventListener('scroll', loopCheck, { passive: true });
 
   loadStrip();
 })();
