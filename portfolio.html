@@ -8,10 +8,10 @@
 <style>
 :root {
   --ink:     #0C0B09;
-  --paper:   #F5F2EC;
-  --warm:    #E8E2D8;
-  --accent:  #C8A96E;
-  --accent2: #8B6940;
+  --paper:   #DCE8FF;
+  --warm:    #C8D8F0;
+  --accent:  #A8C8FF;
+  --accent2: #6AAAE0;
   --muted:   #7A7570;
   --dark:    #1A1714;
   --line:    rgba(12,11,9,0.12);
@@ -68,7 +68,7 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.4rem 3rem;
-  background: rgba(245,242,236,0.92);
+  background: rgba(220,232,255,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -210,10 +210,10 @@ nav {
   font-size: var(--fs-xs);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(245,242,236,0);
+  color: rgba(220,232,255,0);
   transition: color .3s;
 }
-.grid-item:hover .grid-overlay-label { color: rgba(245,242,236,0.8); }
+.grid-item:hover .grid-overlay-label { color: rgba(220,232,255,0.8); }
 
 .empty-state {
   grid-column: 1/-1;
@@ -251,9 +251,9 @@ nav {
   font-size: var(--fs-sm);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(245,242,236,0.5);
+  color: rgba(220,232,255,0.5);
   background: none;
-  border: 1px solid rgba(245,242,236,0.15);
+  border: 1px solid rgba(220,232,255,0.15);
   padding: .8rem 1.2rem;
   cursor: pointer;
   pointer-events: all;
@@ -267,7 +267,7 @@ nav {
   font-size: var(--fs-sm);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(245,242,236,0.5);
+  color: rgba(220,232,255,0.5);
   background: none; border: none;
   cursor: pointer; transition: color .2s;
 }
@@ -279,7 +279,7 @@ nav {
   font-family: var(--sans);
   font-size: var(--fs-xs);
   letter-spacing: .14em;
-  color: rgba(245,242,236,0.35);
+  color: rgba(220,232,255,0.35);
 }
 
 /* ── LOADING ── */
@@ -324,7 +324,7 @@ footer {
   font-family: var(--sans);
   font-size: var(--fs-sm);
   text-transform: uppercase;
-  color: rgba(245,242,236,.35);
+  color: rgba(220,232,255,.35);
   text-decoration: none;
   transition: color .2s;
 }
@@ -333,7 +333,7 @@ footer {
 .footer-copy {
   font-family: var(--sans);
   font-size: var(--fs-xs);
-  color: rgba(245,242,236,.3);
+  color: rgba(220,232,255,.3);
 }
 
 /* ── RESPONSIVE ── */
