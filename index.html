@@ -8,10 +8,10 @@
 <style>
 :root {
   --ink:     #0C0B09;
-  --paper:   #F5F2EC;
-  --warm:    #E8E2D8;
-  --accent:  #C8A96E;
-  --accent2: #8B6940;
+  --paper:   #DCE8FF;
+  --warm:    #C8D8F0;
+  --accent:  #A8C8FF;
+  --accent2: #6AAAE0;
   --muted:   #7A7570;
   --dark:    #1A1714;
   --line:    rgba(12,11,9,0.12);
@@ -68,7 +68,7 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.4rem 3rem;
-  background: rgba(245,242,236,0.92);
+  background: rgba(220,232,255,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -154,7 +154,7 @@ nav {
   font-size: 22vw;
   font-weight: 300;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(245,242,236,0.06);
+  -webkit-text-stroke: 1px rgba(220,232,255,0.06);
   line-height: 1;
   pointer-events: none;
   user-select: none;
@@ -329,7 +329,7 @@ section { padding: 8rem 3rem; }
 #positioning .section-tag::before { background: var(--accent); }
 #positioning .section-h2 { color: var(--paper); }
 #positioning .section-h2 em { color: var(--accent); }
-#positioning .section-lead { color: rgba(245,242,236,.6); }
+#positioning .section-lead { color: rgba(220,232,255,.6); }
 
 .pos-bg {
   position: absolute; right: -4rem; top: 50%;
@@ -337,7 +337,7 @@ section { padding: 8rem 3rem; }
   font-family: var(--serif);
   font-size: 28vw; font-weight: 300;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(245,242,236,0.04);
+  -webkit-text-stroke: 1px rgba(220,232,255,0.04);
   pointer-events: none; user-select: none;
   line-height: 1;
 }
@@ -347,7 +347,7 @@ section { padding: 8rem 3rem; }
   grid-template-columns: 1fr 1fr;
   gap: 1px;
   margin-top: 5rem;
-  background: rgba(245,242,236,0.1);
+  background: rgba(220,232,255,0.1);
 }
 
 .pos-card {
@@ -374,7 +374,7 @@ section { padding: 8rem 3rem; }
 }
 
 .pos-card p {
-  color: rgba(245,242,236,.55);
+  color: rgba(220,232,255,.55);
   line-height: 1.75;
 }
 
@@ -465,16 +465,16 @@ section { padding: 8rem 3rem; }
 .pricing-intro .section-tag::before { background: var(--accent); }
 .pricing-intro .section-h2 { color: var(--paper); }
 .pricing-intro .section-h2 em { color: var(--accent); }
-.pricing-intro .section-lead { color: rgba(245,242,236,.5); }
+.pricing-intro .section-lead { color: rgba(220,232,255,.5); }
 
 .pricing-note {
   padding: 2rem;
-  border: 1px solid rgba(200,169,110,.25);
+  border: 1px solid rgba(168,200,255,.25);
   margin-top: 0;
   align-self: flex-end;
 }
 .pricing-note p {
-  color: rgba(245,242,236,.5);
+  color: rgba(220,232,255,.5);
   line-height: 1.7;
 }
 .pricing-note strong {
@@ -490,7 +490,7 @@ section { padding: 8rem 3rem; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: rgba(200,169,110,.15);
+  background: rgba(168,200,255,.15);
 }
 
 .price-card {
@@ -536,17 +536,17 @@ section { padding: 8rem 3rem; }
 }
 .price-amount span {
   font-family: var(--sans);
-  color: rgba(245,242,236,.4);
+  color: rgba(220,232,255,.4);
   vertical-align: super;
 }
 .price-period {
   font-family: var(--sans);
-  color: rgba(245,242,236,.35);
+  color: rgba(220,232,255,.35);
   margin-bottom: 2rem;
 }
 
 .price-divider {
-  height: 1px; background: rgba(200,169,110,.2);
+  height: 1px; background: rgba(168,200,255,.2);
   margin: 1.6rem 0;
 }
 
@@ -554,9 +554,9 @@ section { padding: 8rem 3rem; }
   list-style: none;
 }
 .price-features li {
-  color: rgba(245,242,236,.55);
+  color: rgba(220,232,255,.55);
   padding: .5rem 0;
-  border-bottom: 1px solid rgba(245,242,236,.06);
+  border-bottom: 1px solid rgba(220,232,255,.06);
   display: flex; align-items: flex-start; gap: .7rem;
   line-height: 1.5;
 }
@@ -576,8 +576,8 @@ section { padding: 8rem 3rem; }
   text-align: center;
   padding: .85rem;
   text-decoration: none;
-  border: 1px solid rgba(200,169,110,.35);
-  color: rgba(245,242,236,.7);
+  border: 1px solid rgba(168,200,255,.35);
+  color: rgba(220,232,255,.7);
   transition: all .2s;
 }
 .price-cta:hover, .price-card.featured .price-cta {
@@ -602,14 +602,14 @@ section { padding: 8rem 3rem; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: rgba(200,169,110,.15);
+  background: rgba(168,200,255,.15);
 }
 
 .pricing-grid-5 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1px;
-  background: rgba(200,169,110,.15);
+  background: rgba(168,200,255,.15);
 }
 
 /* ── PROJECT TYPES: one-off table ── */
@@ -622,16 +622,16 @@ section { padding: 8rem 3rem; }
   font-family: var(--sans);
   text-transform: uppercase; color: var(--accent);
   text-align: left; padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(200,169,110,.2);
+  border-bottom: 1px solid rgba(168,200,255,.2);
 }
 .project-table td {
-  color: rgba(245,242,236,.6);
+  color: rgba(220,232,255,.6);
   padding: .9rem 1.5rem;
-  border-bottom: 1px solid rgba(245,242,236,.05);
+  border-bottom: 1px solid rgba(220,232,255,.05);
   line-height: 1.5;
 }
-.project-table tr:hover td { color: rgba(245,242,236,.85); }
-.project-table td:first-child { color: rgba(245,242,236,.9); font-weight: 500; }
+.project-table tr:hover td { color: rgba(220,232,255,.85); }
+.project-table td:first-child { color: rgba(220,232,255,.9); font-weight: 500; }
 .project-table td:last-child {
   color: var(--accent);
   font-family: var(--sans);
@@ -692,7 +692,7 @@ section { padding: 8rem 3rem; }
 
 .why-card-num {
   font-family: var(--serif);
-  color: rgba(200,169,110,.3);
+  color: rgba(168,200,255,.3);
   line-height: 1; margin-bottom: 1.2rem;
 }
 .why-card h3 {
@@ -711,13 +711,13 @@ section { padding: 8rem 3rem; }
 #markets .section-tag { color: var(--accent); }
 #markets .section-tag::before { background: var(--accent); }
 #markets .section-h2 { color: var(--paper); }
-#markets .section-lead { color: rgba(245,242,236,.5); }
+#markets .section-lead { color: rgba(220,232,255,.5); }
 
 .markets-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: rgba(200,169,110,.12);
+  background: rgba(168,200,255,.12);
   margin-top: 5rem;
 }
 
@@ -737,12 +737,12 @@ section { padding: 8rem 3rem; }
   color: var(--paper); margin-bottom: .8rem;
 }
 .market-card p {
-  color: rgba(245,242,236,.45);
+  color: rgba(220,232,255,.45);
   line-height: 1.7; margin-bottom: 1.4rem;
 }
 .market-clients {
   font-family: var(--sans);
-  color: rgba(200,169,110,.6); line-height: 2;
+  color: rgba(168,200,255,.6); line-height: 2;
 }
 
 /* ── CONTACT ── */
@@ -851,14 +851,14 @@ footer {
 .footer-logo-link .nav-logo-img { filter: invert(1); height: 24px; }
 .footer-copy {
   font-family: var(--sans);
-  color: rgba(245,242,236,.3);
+  color: rgba(220,232,255,.3);
 }
 .footer-links {
   display: flex; gap: 2rem; list-style: none;
 }
 .footer-links a {
   font-family: var(--sans);
-  text-transform: uppercase; color: rgba(245,242,236,.35);
+  text-transform: uppercase; color: rgba(220,232,255,.35);
   text-decoration: none; transition: color .2s;
 }
 .footer-links a:hover { color: var(--accent); }
@@ -1102,12 +1102,12 @@ footer {
 
   </div>
 
-  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(245,242,236,.35);margin-top:2rem;margin-bottom:0;">
-    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,169,110,.4);">get in touch</a> and we will provide an individual quote.
+  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(220,232,255,.35);margin-top:2rem;margin-bottom:0;">
+    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(168,200,255,.4);">get in touch</a> and we will provide an individual quote.
   </p>
 
   <!-- Divider -->
-  <div style="height:2px; background:rgba(200,169,110,.6); margin: 5rem 0;"></div>
+  <div style="height:2px; background:rgba(168,200,255,.6); margin: 5rem 0;"></div>
 
   <!-- AI Retainer intro -->
   <div class="pricing-intro" style="margin-top:5rem;">
@@ -1189,8 +1189,8 @@ footer {
     </div>
   </div>
 
-  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(245,242,236,.35);margin-top:2rem;">
-    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,169,110,.4);">get in touch</a> and we will provide an individual quote.
+  <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:rgba(220,232,255,.35);margin-top:2rem;">
+    If you have a custom request — <a href="#contact" style="color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(168,200,255,.4);">get in touch</a> and we will provide an individual quote.
   </p>
 
 </section>
