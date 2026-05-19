@@ -1438,16 +1438,26 @@ footer {
     setTimeout(loopCheck, 50);
   });
 
-  // Колёсико мыши → горизонтальный скролл
-  // listener на wrap (overflow:hidden), скроллим strip внутри
+  // Колёсико мыши → горизонтальный скролл с инерцией
+  let velocity = 0;
+  let rafId = null;
+
+  function animate() {
+    if (Math.abs(velocity) < 0.5) { velocity = 0; rafId = null; return; }
+    strip.scrollLeft += velocity;
+    velocity *= 0.92;        // затухание: 0.92 = плавно, 0.85 = быстрее тормозит
+    loopCheck();
+    rafId = requestAnimationFrame(animate);
+  }
+
   const wrap = document.querySelector('.photo-strip-wrap');
   (wrap || strip).addEventListener('wheel', (e) => {
     e.preventDefault();
     const delta = e.deltaMode === 1 ? e.deltaY * 20
                 : e.deltaMode === 2 ? e.deltaY * 300
                 : e.deltaY;
-    strip.scrollLeft += delta;
-    loopCheck();
+    velocity += delta * 0.8;  // 0.8 = чувствительность колёсика
+    if (!rafId) rafId = requestAnimationFrame(animate);
   }, { passive: false });
 
   // Следим за скроллом для бесконечного loop (свайп на мобильном)
