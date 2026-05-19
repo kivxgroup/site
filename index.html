@@ -964,6 +964,7 @@ footer {
   .contact-left, .contact-right { padding: 4rem 1.5rem; }
   footer { flex-direction: column; gap: 1.2rem; text-align: center; }
   .pricing-intro { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-h1 { font-size: 9vw; }
 }
 </style>
 </head>
@@ -1436,7 +1437,7 @@ footer {
   // Mousewheel scrolls the strip horizontally
   strip.addEventListener('wheel', (e) => {
     e.preventDefault();
-    strip.scrollBy({ left: e.deltaY * 2, behavior: 'smooth' });
+    strip.scrollBy({ left: e.deltaY, behavior: 'auto' });
     setTimeout(() => {
       const imgs = strip.querySelectorAll('img');
       const total = imgs.length / 3;
