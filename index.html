@@ -1365,47 +1365,16 @@ footer {
 <script>
 // ── PHOTO STRIP ──
 (function() {
-  const CLOUD_BASE = 'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/';
-  const IMAGES = [
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/01',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/02',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/03',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/04',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/05',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/06',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/07',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/08',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/09',
-    'https://res.cloudinary.com/kivxgroup/image/upload/q_auto,f_auto,h_560/hero-line/10',
-  ];
+  const CLOUD = 'kivxgroup';
+  const FOLDER = 'hero-line';
 
   const strip = document.getElementById('photoStrip');
   const prev  = document.getElementById('stripPrev');
   const next  = document.getElementById('stripNext');
   if (!strip) return;
 
-  let current = 0;
-  let imgsLoaded = [];
-
-  // Build triplet: [...tail, ...all, ...head] for infinite loop illusion
-  function buildStrip() {
-    strip.innerHTML = '';
-    imgsLoaded = [];
-    const all = [...IMAGES, ...IMAGES, ...IMAGES]; // triple for seamless loop
-    all.forEach((name, i) => {
-      const img = document.createElement('img');
-      img.src = name;
-      img.alt = 'KIVX portfolio';
-      img.draggable = false;
-      strip.appendChild(img);
-      imgsLoaded.push(img);
-    });
-  }
-
-  buildStrip();
-
-  const total = IMAGES.length;
-  let offset = total; // start in the middle set
+  let offset = 0;
+  let total = 0;
   let isAnimating = false;
 
   function getImgWidth() {
@@ -1420,30 +1389,50 @@ footer {
   }
 
   function go(dir) {
-    if (isAnimating) return;
+    if (isAnimating || total === 0) return;
     isAnimating = true;
     offset += dir;
     setPosition(true);
   }
 
   strip.addEventListener('transitionend', () => {
-    // Jump silently if we've gone past the middle set
-    if (offset >= total * 2) {
-      offset = total;
-      setPosition(false);
-    } else if (offset < total) {
-      offset = total * 2 - 1;
-      setPosition(false);
-    }
+    if (offset >= total * 2) { offset = total; setPosition(false); }
+    else if (offset < total) { offset = total * 2 - 1; setPosition(false); }
     isAnimating = false;
   });
 
   prev.addEventListener('click', () => go(-1));
   next.addEventListener('click', () => go(1));
 
-  // Init position without animation
-  window.addEventListener('load', () => setPosition(false));
-  setTimeout(() => setPosition(false), 100);
+  async function loadStrip() {
+    try {
+      const url = `https://res.cloudinary.com/${CLOUD}/image/list/${FOLDER}.json`;
+      const r = await fetch(url);
+      if (!r.ok) return;
+      const data = await r.json();
+      const resources = data.resources || [];
+      if (!resources.length) return;
+
+      total = resources.length;
+      const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_560`;
+
+      // Triple for infinite loop
+      const all = [...resources, ...resources, ...resources];
+      strip.innerHTML = '';
+      all.forEach(res => {
+        const img = document.createElement('img');
+        img.src = `${base}/${res.public_id}.${res.format}`;
+        img.alt = 'KIVX portfolio';
+        img.draggable = false;
+        strip.appendChild(img);
+      });
+
+      offset = total;
+      setTimeout(() => setPosition(false), 50);
+    } catch(e) { console.error('Strip load error:', e); }
+  }
+
+  loadStrip();
 })();
 
 const reveals = document.querySelectorAll('.reveal');
