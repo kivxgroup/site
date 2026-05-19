@@ -1434,18 +1434,30 @@ footer {
   prev.addEventListener('click', () => scrollStep(-1));
   next.addEventListener('click', () => scrollStep(1));
 
-  // Mousewheel scrolls the strip horizontally
+  // Mousewheel with momentum
+  let momentum = 0;
+  let rafId = null;
+
+  function applyMomentum() {
+    if (Math.abs(momentum) < 0.5) { rafId = null; return; }
+    strip.scrollLeft += momentum;
+    momentum *= 0.92;
+
+    // Infinite loop check
+    const imgs = strip.querySelectorAll('img');
+    const total = imgs.length / 3;
+    let oneSet = 0;
+    for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
+    if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
+    else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
+
+    rafId = requestAnimationFrame(applyMomentum);
+  }
+
   strip.addEventListener('wheel', (e) => {
     e.preventDefault();
-    strip.scrollBy({ left: e.deltaY, behavior: 'auto' });
-    setTimeout(() => {
-      const imgs = strip.querySelectorAll('img');
-      const total = imgs.length / 3;
-      let oneSet = 0;
-      for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
-      if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
-      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
-    }, 520);
+    momentum += e.deltaY * 0.8;
+    if (!rafId) rafId = requestAnimationFrame(applyMomentum);
   }, { passive: false });
 
   loadStrip();
