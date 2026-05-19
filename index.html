@@ -992,7 +992,7 @@ footer {
   </div>
   <div class="hero-content">
     <h1 class="hero-h1 fade-up fade-up-2">
-      <span style="display:block;font-weight:400;color:#ffffff;letter-spacing:-.03em;">Visual solutions</span>
+      <span style="display:block;font-weight:400;color:#ffffff;letter-spacing:-.03em;">Visual solutions for</span>
       <span style="display:block;font-weight:700;color:rgba(168,200,255,1);letter-spacing:-.04em;">new developments</span>
     </h1>
     <p class="hero-sub fade-up fade-up-3">
@@ -1372,7 +1372,6 @@ footer {
   const CLOUD = 'kivxgroup';
   const FOLDER = 'hero-line';
 
-  const wrap  = document.querySelector('.photo-strip-wrap');
   const strip = document.getElementById('photoStrip');
   const prev  = document.getElementById('stripPrev');
   const next  = document.getElementById('stripNext');
@@ -1388,8 +1387,6 @@ footer {
       if (!resources.length) return;
 
       const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_560`;
-
-      // Triple for infinite loop
       const all = [...resources, ...resources, ...resources];
       strip.innerHTML = '';
       all.forEach(res => {
@@ -1400,42 +1397,55 @@ footer {
         strip.appendChild(img);
       });
 
-      // After images load, scroll to middle set
+      // Scroll to middle set after first image loads
       const firstImg = strip.querySelector('img');
       function initScroll() {
-        const total = resources.length;
-        let midOffset = 0;
         const imgs = strip.querySelectorAll('img');
-        for (let i = 0; i < total; i++) midOffset += imgs[i].offsetWidth;
-        strip.scrollLeft = midOffset;
+        const total = resources.length;
+        let mid = 0;
+        for (let i = 0; i < total; i++) mid += imgs[i].offsetWidth;
+        strip.scrollLeft = mid;
       }
-
-      firstImg.addEventListener('load', initScroll);
       if (firstImg.complete) initScroll();
+      else firstImg.addEventListener('load', initScroll);
 
-    } catch(e) { console.error('Strip load error:', e); }
+    } catch(e) { console.error('Strip error:', e); }
   }
 
-  function scrollBy(dir) {
+  function getStepWidth() {
     const img = strip.querySelector('img');
-    if (!img) return;
-    const step = img.offsetWidth;
-    strip.scrollBy({ left: dir * step, behavior: 'smooth' });
+    return img ? img.offsetWidth : 400;
+  }
 
-    // Infinite loop: if near end jump to middle
+  function scrollStep(dir) {
+    strip.scrollBy({ left: dir * getStepWidth(), behavior: 'smooth' });
+    // Infinite loop jump after scroll settles
     setTimeout(() => {
-      const total = strip.querySelectorAll('img').length / 3;
       const imgs = strip.querySelectorAll('img');
-      let oneSetW = 0;
-      for (let i = 0; i < total; i++) oneSetW += imgs[i].offsetWidth;
-
-      if (strip.scrollLeft >= oneSetW * 2) strip.scrollLeft -= oneSetW;
-      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSetW;
+      const total = imgs.length / 3;
+      let oneSet = 0;
+      for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
+      if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
+      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
     }, 520);
   }
 
-  prev.addEventListener('click', () => scrollBy(-1));
-  next.addEventListener('click', () => scrollBy(1));
+  prev.addEventListener('click', () => scrollStep(-1));
+  next.addEventListener('click', () => scrollStep(1));
+
+  // Mousewheel scrolls the strip horizontally
+  strip.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    strip.scrollBy({ left: e.deltaY * 2, behavior: 'smooth' });
+    setTimeout(() => {
+      const imgs = strip.querySelectorAll('img');
+      const total = imgs.length / 3;
+      let oneSet = 0;
+      for (let i = 0; i < total; i++) oneSet += imgs[i].offsetWidth;
+      if (strip.scrollLeft >= oneSet * 2) strip.scrollLeft -= oneSet;
+      else if (strip.scrollLeft <= 0) strip.scrollLeft += oneSet;
+    }, 520);
+  }, { passive: false });
 
   loadStrip();
 })();
