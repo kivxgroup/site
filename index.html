@@ -1456,7 +1456,7 @@ footer {
     const delta = e.deltaMode === 1 ? e.deltaY * 20
                 : e.deltaMode === 2 ? e.deltaY * 300
                 : e.deltaY;
-    velocity += delta * 0.8;  // 0.8 = чувствительность колёсика
+    velocity += delta * 0.6;  // 0.8 = чувствительность колёсика
     if (!rafId) rafId = requestAnimationFrame(animate);
   }, { passive: false });
 
