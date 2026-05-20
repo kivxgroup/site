@@ -447,10 +447,11 @@ footer {
 <script>
 const CLOUD = 'kivxgroup';
 
-const FOLDERS = {
-  selected: 'portfolio',
-  product:  'product-viz',
-  shots:    'ai-shots'
+// Для selected — папка portfolio, для остальных — тег в Cloudinary
+const SOURCES = {
+  selected: { type: 'folder', name: 'portfolio' },
+  product:  { type: 'tag',    name: 'product-shots' },
+  shots:    { type: 'tag',    name: 'ai-shots' }
 };
 
 async function fetchFromFolder(folder) {
@@ -479,9 +480,14 @@ async function fetchFromFolder(folder) {
     } catch { return []; }
   }
 
+  const source = SOURCES[folder] || { type: 'folder', name: folder };
+  const name = source.name;
+
   const [images, videos] = await Promise.all([
-    fetchList(`https://res.cloudinary.com/${CLOUD}/image/list/${folder}.json`, 'image'),
-    fetchList(`https://res.cloudinary.com/${CLOUD}/video/list/${folder}.json`, 'video')
+    fetchList(`https://res.cloudinary.com/${CLOUD}/image/list/${name}.json`, 'image'),
+    source.type === 'folder'
+      ? fetchList(`https://res.cloudinary.com/${CLOUD}/video/list/${name}.json`, 'video')
+      : Promise.resolve([])
   ]);
   return [...images, ...videos];
 }
@@ -504,11 +510,10 @@ async function applyTab(tab) {
   const grid = document.getElementById('main-grid');
   grid.innerHTML = '<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>';
 
-  const folder = FOLDERS[tab];
-  if (!cache[folder]) {
-    cache[folder] = await fetchFromFolder(folder);
+  if (!cache[tab]) {
+    cache[tab] = await fetchFromFolder(tab);
   }
-  filtered = cache[folder];
+  filtered = cache[tab];
   renderGrid(filtered);
 }
 
