@@ -446,32 +446,33 @@ footer {
 
 <script>
 const CLOUD = 'kivxgroup';
-const FOLDER = 'portfolio';
 
-async function fetchFolder() {
-  const imageUrl = `https://res.cloudinary.com/${CLOUD}/image/list/${FOLDER}.json`;
-  const videoUrl = `https://res.cloudinary.com/${CLOUD}/video/list/${FOLDER}.json`;
+const FOLDERS = {
+  selected: 'portfolio',
+  product:  'product-viz',
+  shots:    'ai-shots'
+};
 
+async function fetchFromFolder(folder) {
   async function fetchList(url, type) {
     try {
       const r = await fetch(url);
       if (!r.ok) return [];
       const data = await r.json();
       return (data.resources || []).map(res => {
-        const tags = res.tags || [];
         if (type === 'video') {
           const base = `https://res.cloudinary.com/${CLOUD}/video/upload`;
           return {
             src: `${base}/q_auto/${res.public_id}.${res.format}`,
             poster: `${base}/so_0,f_jpg,q_auto,w_800/${res.public_id}.jpg`,
-            type: 'video', tags
+            type: 'video'
           };
         } else {
           const base = `https://res.cloudinary.com/${CLOUD}/image/upload`;
           return {
             src: `${base}/q_auto,f_auto,w_2000/${res.public_id}.${res.format}`,
             thumb: `${base}/q_auto,f_auto,w_800/${res.public_id}.${res.format}`,
-            type: 'image', tags
+            type: 'image'
           };
         }
       });
@@ -479,13 +480,15 @@ async function fetchFolder() {
   }
 
   const [images, videos] = await Promise.all([
-    fetchList(imageUrl, 'image'),
-    fetchList(videoUrl, 'video')
+    fetchList(`https://res.cloudinary.com/${CLOUD}/image/list/${folder}.json`, 'image'),
+    fetchList(`https://res.cloudinary.com/${CLOUD}/video/list/${folder}.json`, 'video')
   ]);
   return [...images, ...videos];
 }
 
-let allItems = [];
+// Кеш чтобы не грузить папку дважды
+const cache = {};
+
 let filtered = [];
 let current = 0;
 let activeTab = 'selected';
@@ -493,30 +496,19 @@ let activeTab = 'selected';
 async function loadAll() {
   const grid = document.getElementById('main-grid');
   grid.innerHTML = '<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>';
-
-  allItems = await fetchFolder();
-  applyTab(activeTab);
+  await applyTab('selected');
 }
 
-function applyTab(tab) {
+async function applyTab(tab) {
   activeTab = tab;
-  if (tab === 'selected') {
-    // Показываем всё что НЕ помечено тегом product-shots или shots
-    filtered = allItems.filter(item => {
-      const tags = item.tags.map(t => t.toLowerCase());
-      return !tags.includes('product-shots') && !tags.includes('shots');
-    });
-    // Если ничего не отфильтровалось — показываем всё
-    if (!filtered.length) filtered = [...allItems];
-  } else if (tab === 'product') {
-    filtered = allItems.filter(item =>
-      item.tags.map(t => t.toLowerCase()).includes('product-shots')
-    );
-  } else if (tab === 'shots') {
-    filtered = allItems.filter(item =>
-      item.tags.map(t => t.toLowerCase()).includes('shots')
-    );
+  const grid = document.getElementById('main-grid');
+  grid.innerHTML = '<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>';
+
+  const folder = FOLDERS[tab];
+  if (!cache[folder]) {
+    cache[folder] = await fetchFromFolder(folder);
   }
+  filtered = cache[folder];
   renderGrid(filtered);
 }
 
