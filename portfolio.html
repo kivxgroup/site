@@ -547,7 +547,7 @@ function renderGrid(items) {
       const img = document.createElement('img');
       img.src = item.thumb;
       img.loading = 'lazy'; img.decoding = 'async';
-      img.alt = item.tags[0] || 'Project';
+      img.alt = 'Project';
       el.appendChild(img);
     }
 
@@ -555,7 +555,7 @@ function renderGrid(items) {
     overlay.className = 'grid-overlay';
     const lbl = document.createElement('span');
     lbl.className = 'grid-overlay-label';
-    lbl.textContent = item.tags.join(', ') || 'Project';
+    lbl.textContent = 'Project';
     overlay.appendChild(lbl);
     el.appendChild(overlay);
 
