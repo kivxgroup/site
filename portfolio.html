@@ -159,6 +159,38 @@ nav {
 /* ── GRID ── */
 .portfolio-section { padding: 3rem 0; }
 
+/* ── TABS ── */
+.portfolio-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(220,232,255,0.1);
+  margin-bottom: 3rem;
+  padding: 0 3rem;
+}
+.tab-btn {
+  font-family: var(--sans);
+  font-size: var(--fs-sm);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1rem 1.8rem 1rem 0;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--paper); }
+.tab-btn.active {
+  color: var(--paper);
+  border-bottom-color: var(--accent2);
+}
+@media (max-width: 600px) {
+  .portfolio-tabs { padding: 0 1.5rem; gap: 0; }
+  .tab-btn { font-size: 11px; padding: .8rem 1.2rem .8rem 0; }
+}
+
 .section-label {
   font-family: var(--sans);
   font-size: var(--fs-xs);
@@ -378,6 +410,11 @@ footer {
 
 <!-- GRID -->
 <main class="portfolio-section">
+  <div class="portfolio-tabs">
+    <button class="tab-btn active" data-tab="selected">Selected Works</button>
+    <button class="tab-btn" data-tab="product">Product Shots</button>
+    <button class="tab-btn" data-tab="shots">AI Shots</button>
+  </div>
   <div class="grid" id="main-grid"></div>
 </main>
 
@@ -451,16 +488,46 @@ async function fetchFolder() {
 let allItems = [];
 let filtered = [];
 let current = 0;
+let activeTab = 'selected';
 
 async function loadAll() {
   const grid = document.getElementById('main-grid');
-  const label = document.getElementById('grid-label');
   grid.innerHTML = '<div class="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>';
 
   allItems = await fetchFolder();
-  filtered = [...allItems];
+  applyTab(activeTab);
+}
+
+function applyTab(tab) {
+  activeTab = tab;
+  if (tab === 'selected') {
+    // Показываем всё что НЕ помечено тегом product-shots или shots
+    filtered = allItems.filter(item => {
+      const tags = item.tags.map(t => t.toLowerCase());
+      return !tags.includes('product-shots') && !tags.includes('shots');
+    });
+    // Если ничего не отфильтровалось — показываем всё
+    if (!filtered.length) filtered = [...allItems];
+  } else if (tab === 'product') {
+    filtered = allItems.filter(item =>
+      item.tags.map(t => t.toLowerCase()).includes('product-shots')
+    );
+  } else if (tab === 'shots') {
+    filtered = allItems.filter(item =>
+      item.tags.map(t => t.toLowerCase()).includes('shots')
+    );
+  }
   renderGrid(filtered);
 }
+
+// Tab click handlers
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTab(btn.dataset.tab);
+  });
+});
 
 function renderGrid(items) {
   const grid = document.getElementById('main-grid');
