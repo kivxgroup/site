@@ -149,18 +149,17 @@ p, li { font-size: var(--fs-base); }
   align-items: center;
   justify-content: center;
   height: 40px;
-  opacity: 0.45;
+  opacity: 0.5;
   transition: opacity .3s;
-  filter: grayscale(1) brightness(2);
   user-select: none;
 }
-.client-strip-item span {
-  font-family: var(--sans);
-  font-size: var(--fs-sm);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--paper);
-  font-weight: 600;
+.client-strip-item img {
+  height: 40px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: grayscale(1);
 }
 
 
@@ -1533,7 +1532,7 @@ footer {
   if (!clientStrip) return;
 
   const CLOUD = 'kivxgroup';
-  let itemCount = 0;
+  const SCROLL_THRESHOLD = 10;
 
   async function loadClients() {
     try {
@@ -1543,11 +1542,22 @@ footer {
       const resources = data.resources || [];
       if (!resources.length) return;
 
-      itemCount = resources.length;
       const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_80`;
       clientStrip.innerHTML = '';
 
-      [...resources, ...resources, ...resources].forEach(res => {
+      const needsScroll = resources.length > SCROLL_THRESHOLD;
+
+      // Если мало логотипов — центрируем, без дублирования
+      const toRender = needsScroll
+        ? [...resources, ...resources, ...resources]
+        : resources;
+
+      if (!needsScroll) {
+        clientStrip.style.justifyContent = 'center';
+        clientStrip.style.overflowX = 'hidden';
+      }
+
+      toRender.forEach(res => {
         const item = document.createElement('div');
         item.className = 'client-strip-item';
         const img = document.createElement('img');
@@ -1558,21 +1568,23 @@ footer {
         clientStrip.appendChild(item);
       });
 
-      setTimeout(initScroll, 100);
-    } catch(e) { console.error('Client strip error:', e); }
-  }
+      if (needsScroll) {
+        setTimeout(() => {
+          const items = clientStrip.querySelectorAll('.client-strip-item');
+          let w = 0;
+          for (let i = 0; i < resources.length; i++) w += items[i].offsetWidth + 64;
+          clientStrip.scrollLeft = w;
+        }, 100);
+      }
 
-  function initScroll() {
-    const items = clientStrip.querySelectorAll('.client-strip-item');
-    let w = 0;
-    for (let i = 0; i < itemCount; i++) w += items[i].offsetWidth + 64;
-    clientStrip.scrollLeft = w;
+    } catch(e) { console.error('Client strip error:', e); }
   }
 
   function loopCheck() {
     const items = clientStrip.querySelectorAll('.client-strip-item');
+    const total = Math.floor(items.length / 3);
     let oneSet = 0;
-    for (let i = 0; i < itemCount; i++) oneSet += items[i].offsetWidth + 64;
+    for (let i = 0; i < total; i++) oneSet += items[i].offsetWidth + 64;
     if (clientStrip.scrollLeft >= oneSet * 2) clientStrip.scrollLeft -= oneSet;
     else if (clientStrip.scrollLeft <= 0)     clientStrip.scrollLeft += oneSet;
   }
