@@ -112,10 +112,8 @@ p, li { font-size: var(--fs-base); }
 
 /* ── CLIENT LOGO STRIP ── */
 .client-strip-section {
-  padding: 4rem 0;
-  border-top: 1px solid rgba(220,232,255,0.07);
-  border-bottom: 1px solid rgba(220,232,255,0.07);
-  overflow: hidden;
+  padding: 4rem 3rem;
+  background: rgba(0,0,0,0.04);
 }
 .client-strip-label {
   font-family: var(--sans);
@@ -127,19 +125,19 @@ p, li { font-size: var(--fs-base); }
   margin-bottom: 2.5rem;
 }
 .client-strip-wrap {
-  position: relative;
   width: 100%;
   overflow: hidden;
 }
 .client-strip {
   display: flex;
   align-items: center;
-  gap: 4rem;
-  overflow-x: scroll;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 5rem;
+  overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  white-space: nowrap;
   padding: 0.5rem 0;
 }
 .client-strip::-webkit-scrollbar { display: none; }
@@ -148,15 +146,14 @@ p, li { font-size: var(--fs-base); }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
   opacity: 0.5;
   transition: opacity .3s;
   user-select: none;
 }
 .client-strip-item img {
-  height: 40px;
+  height: 56px;
   width: auto;
-  max-width: 160px;
+  max-width: 180px;
   object-fit: contain;
   mix-blend-mode: multiply;
   filter: grayscale(1);
@@ -1532,7 +1529,6 @@ footer {
   if (!clientStrip) return;
 
   const CLOUD = 'kivxgroup';
-  const SCROLL_THRESHOLD = 10;
 
   async function loadClients() {
     try {
@@ -1542,22 +1538,11 @@ footer {
       const resources = data.resources || [];
       if (!resources.length) return;
 
-      const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_80`;
+      const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_112`;
       clientStrip.innerHTML = '';
 
-      const needsScroll = resources.length > SCROLL_THRESHOLD;
-
-      // Если мало логотипов — центрируем, без дублирования
-      const toRender = needsScroll
-        ? [...resources, ...resources, ...resources]
-        : resources;
-
-      if (!needsScroll) {
-        clientStrip.style.justifyContent = 'center';
-        clientStrip.style.overflowX = 'hidden';
-      }
-
-      toRender.forEach(res => {
+      // Сначала рендерим один набор
+      resources.forEach(res => {
         const item = document.createElement('div');
         item.className = 'client-strip-item';
         const img = document.createElement('img');
@@ -1568,49 +1553,77 @@ footer {
         clientStrip.appendChild(item);
       });
 
-      if (needsScroll) {
-        setTimeout(() => {
-          const items = clientStrip.querySelectorAll('.client-strip-item');
-          let w = 0;
-          for (let i = 0; i < resources.length; i++) w += items[i].offsetWidth + 64;
-          clientStrip.scrollLeft = w;
-        }, 100);
-      }
+      // После рендера проверяем — помещаются ли
+      setTimeout(() => {
+        const totalWidth = clientStrip.scrollWidth;
+        const wrapWidth = clientStrip.offsetWidth;
+
+        if (totalWidth > wrapWidth) {
+          // Не помещаются — включаем скролл с loop
+          clientStrip.style.justifyContent = 'flex-start';
+
+          // Добавляем ещё два набора для loop
+          [...resources, ...resources].forEach(res => {
+            const item = document.createElement('div');
+            item.className = 'client-strip-item';
+            const img = document.createElement('img');
+            img.src = `${base}/${res.public_id}.${res.format}`;
+            img.alt = res.public_id;
+            img.draggable = false;
+            item.appendChild(img);
+            clientStrip.appendChild(item);
+          });
+
+          // Встаём на средний набор
+          setTimeout(() => {
+            const items = clientStrip.querySelectorAll('.client-strip-item');
+            let w = 0;
+            for (let i = 0; i < resources.length; i++) {
+              w += items[i].offsetWidth + 80; // gap
+            }
+            clientStrip.scrollLeft = w;
+          }, 50);
+
+          enableScroll(resources.length);
+        }
+        // Если помещаются — justify-content: center уже стоит, ничего не делаем
+      }, 200);
 
     } catch(e) { console.error('Client strip error:', e); }
   }
 
-  function loopCheck() {
-    const items = clientStrip.querySelectorAll('.client-strip-item');
-    const total = Math.floor(items.length / 3);
-    let oneSet = 0;
-    for (let i = 0; i < total; i++) oneSet += items[i].offsetWidth + 64;
-    if (clientStrip.scrollLeft >= oneSet * 2) clientStrip.scrollLeft -= oneSet;
-    else if (clientStrip.scrollLeft <= 0)     clientStrip.scrollLeft += oneSet;
+  function enableScroll(oneSetCount) {
+    function loopCheck() {
+      const items = clientStrip.querySelectorAll('.client-strip-item');
+      let oneSet = 0;
+      for (let i = 0; i < oneSetCount; i++) oneSet += items[i].offsetWidth + 80;
+      if (clientStrip.scrollLeft >= oneSet * 2) clientStrip.scrollLeft -= oneSet;
+      else if (clientStrip.scrollLeft <= 0)     clientStrip.scrollLeft += oneSet;
+    }
+
+    let velocity = 0;
+    let rafId = null;
+
+    function animate() {
+      if (Math.abs(velocity) < 0.5) { velocity = 0; rafId = null; return; }
+      clientStrip.scrollLeft += velocity;
+      velocity *= 0.92;
+      loopCheck();
+      rafId = requestAnimationFrame(animate);
+    }
+
+    const wrap = document.querySelector('.client-strip-wrap');
+    (wrap || clientStrip).addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaMode === 1 ? e.deltaY * 20
+                  : e.deltaMode === 2 ? e.deltaY * 300
+                  : e.deltaY;
+      velocity += delta * 0.4;
+      if (!rafId) rafId = requestAnimationFrame(animate);
+    }, { passive: false });
+
+    clientStrip.addEventListener('scroll', loopCheck, { passive: true });
   }
-
-  let velocity = 0;
-  let rafId = null;
-
-  function animate() {
-    if (Math.abs(velocity) < 0.5) { velocity = 0; rafId = null; return; }
-    clientStrip.scrollLeft += velocity;
-    velocity *= 0.92;
-    loopCheck();
-    rafId = requestAnimationFrame(animate);
-  }
-
-  const wrap = document.querySelector('.client-strip-wrap');
-  (wrap || clientStrip).addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaMode === 1 ? e.deltaY * 20
-                : e.deltaMode === 2 ? e.deltaY * 300
-                : e.deltaY;
-    velocity += delta * 0.4;
-    if (!rafId) rafId = requestAnimationFrame(animate);
-  }, { passive: false });
-
-  clientStrip.addEventListener('scroll', loopCheck, { passive: true });
 
   loadClients();
 })();
