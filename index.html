@@ -1532,40 +1532,47 @@ footer {
   const clientStrip = document.getElementById('clientStrip');
   if (!clientStrip) return;
 
-  // Замени на реальные названия/логотипы своих клиентов
-  // Если есть логотипы в Cloudinary — замени span на img с src
-  const clients = [
-    'Emaar', 'Aldar', 'Meraas', 'Damac', 'Nakheel',
-    'Azizi', 'Select Group', 'Sobha', 'Omniyat', 'Reportage'
-  ];
+  const CLOUD = 'kivxgroup';
+  let itemCount = 0;
 
-  // Тройной набор для бесконечного loop
-  const allClients = [...clients, ...clients, ...clients];
-  clientStrip.innerHTML = '';
-  allClients.forEach(name => {
-    const item = document.createElement('div');
-    item.className = 'client-strip-item';
-    const span = document.createElement('span');
-    span.textContent = name;
-    item.appendChild(span);
-    clientStrip.appendChild(item);
-  });
+  async function loadClients() {
+    try {
+      const r = await fetch(`https://res.cloudinary.com/${CLOUD}/image/list/clients.json`);
+      if (!r.ok) return;
+      const data = await r.json();
+      const resources = data.resources || [];
+      if (!resources.length) return;
 
-  // Встаём на средний набор
+      itemCount = resources.length;
+      const base = `https://res.cloudinary.com/${CLOUD}/image/upload/q_auto,f_auto,h_80`;
+      clientStrip.innerHTML = '';
+
+      [...resources, ...resources, ...resources].forEach(res => {
+        const item = document.createElement('div');
+        item.className = 'client-strip-item';
+        const img = document.createElement('img');
+        img.src = `${base}/${res.public_id}.${res.format}`;
+        img.alt = res.public_id;
+        img.draggable = false;
+        item.appendChild(img);
+        clientStrip.appendChild(item);
+      });
+
+      setTimeout(initScroll, 100);
+    } catch(e) { console.error('Client strip error:', e); }
+  }
+
   function initScroll() {
     const items = clientStrip.querySelectorAll('.client-strip-item');
-    const total = clients.length;
     let w = 0;
-    for (let i = 0; i < total; i++) w += items[i].offsetWidth + 64; // 64 = gap 4rem
+    for (let i = 0; i < itemCount; i++) w += items[i].offsetWidth + 64;
     clientStrip.scrollLeft = w;
   }
-  setTimeout(initScroll, 50);
 
   function loopCheck() {
     const items = clientStrip.querySelectorAll('.client-strip-item');
-    const total = clients.length;
     let oneSet = 0;
-    for (let i = 0; i < total; i++) oneSet += items[i].offsetWidth + 64;
+    for (let i = 0; i < itemCount; i++) oneSet += items[i].offsetWidth + 64;
     if (clientStrip.scrollLeft >= oneSet * 2) clientStrip.scrollLeft -= oneSet;
     else if (clientStrip.scrollLeft <= 0)     clientStrip.scrollLeft += oneSet;
   }
@@ -1592,6 +1599,8 @@ footer {
   }, { passive: false });
 
   clientStrip.addEventListener('scroll', loopCheck, { passive: true });
+
+  loadClients();
 })();
 
 const reveals = document.querySelectorAll('.reveal');
