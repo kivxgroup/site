@@ -483,6 +483,11 @@ async function fetchFromFolder(folder) {
   const source = SOURCES[folder] || { type: 'folder', name: folder };
   const name = source.name;
 
+  // AI Shots — только видео по тегу
+  if (folder === 'shots') {
+    return fetchList(`https://res.cloudinary.com/${CLOUD}/video/list/${name}.json`, 'video');
+  }
+
   const [images, videos] = await Promise.all([
     fetchList(`https://res.cloudinary.com/${CLOUD}/image/list/${name}.json`, 'image'),
     source.type === 'folder'
