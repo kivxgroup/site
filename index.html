@@ -859,6 +859,80 @@ section { padding: 8rem 3rem; }
   color: rgba(168,200,255,.6); line-height: 2;
 }
 
+
+/* ── ABOUT / FOUNDERS ── */
+#about {
+  background: var(--paper);
+}
+
+.about-header {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6rem;
+  padding-bottom:4rem;
+  margin-bottom:4rem;
+  border-bottom:1px solid var(--line);
+}
+
+.about-title {
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:300;
+  line-height:.95;
+}
+
+.about-intro p {
+  color:var(--muted);
+  max-width:560px;
+  line-height:1.8;
+}
+
+.founders-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+}
+
+.founder-card {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2.5rem;
+}
+
+.founder-photo {
+  width:100%;
+  aspect-ratio:3688/4608;
+  object-fit:cover;
+  filter:grayscale(1);
+}
+
+.founder-role {
+  color:var(--accent2);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:var(--fs-xs);
+  margin:1rem 0 2rem;
+}
+
+.founder-info p {
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.team-strip {
+  margin-top:5rem;
+  padding-top:3rem;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:1fr 2fr 1fr;
+  gap:3rem;
+}
+
+@media(max-width:900px){
+.about-header,.founders-grid,.founder-card,.team-strip{
+grid-template-columns:1fr;
+}
+}
+
 /* ── CONTACT ── */
 #contact {
   background: var(--paper);
@@ -1482,6 +1556,51 @@ footer {
     <div class="client-strip" id="clientStrip"></div>
   </div>
 </div>
+
+
+<!-- ABOUT -->
+<section id="about">
+<div class="about-header">
+<div>
+<div class="section-tag">About us</div>
+<h2 class="about-title">THE PEOPLE<br>BEHIND KIVX</h2>
+</div>
+
+<div class="about-intro">
+<h3>Founder-led.<br>Powered by a senior production team.</h3>
+<p>KIVX GROUP combines direct founder involvement with the production capacity of an experienced visual team. Every project is managed by us while our network of CGI artists, AI specialists, designers and post-production experts delivers premium visuals at scale.</p>
+</div>
+</div>
+
+<div class="founders-grid">
+
+<div class="founder-card">
+<img class="founder-photo" src="founder_1.jpg">
+<div class="founder-info">
+<h3>VOLODYMYR<br>KYREY</h3>
+<div class="founder-role">Founder / CGI Director</div>
+<p>10+ years in architectural visualization and CGI production. Led 200+ projects for developers, architects and international clients.<br><br>Responsible for CGI quality standards, production pipeline and final visual direction.</p>
+</div>
+</div>
+
+<div class="founder-card">
+<img class="founder-photo" src="founder_2.jpg">
+<div class="founder-info">
+<h3>VIKTORYIA<br>SZCZAP</h3>
+<div class="founder-role">Co-Founder / Creative Director</div>
+<p>8+ years in visual production, creative direction and client communication.<br><br>Responsible for brand vision, AI workflows, creative strategy and client experience.</p>
+</div>
+</div>
+
+</div>
+
+<div class="team-strip">
+<strong>A PROFESSIONAL TEAM<br>BEHIND EVERY PROJECT</strong>
+<div>Our production team includes senior 3D artists, AI specialists, architects, designers and post-production experts.</div>
+<div>✓ Senior CGI Artists<br>✓ AI Specialists<br>✓ Designers<br>✓ Post-production Experts</div>
+</div>
+
+</section>
 
 <!-- CONTACT -->
 <section id="contact">
