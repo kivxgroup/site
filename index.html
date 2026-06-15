@@ -921,28 +921,55 @@ section { padding: 8rem 3rem; }
 
 .team-strip {
   margin-top:5rem;
-  padding-top:3rem;
+  padding:3rem 0;
   border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+
   display:grid;
-  grid-template-columns:.4fr 1.3fr 2fr 1.3fr;
-  gap:3rem;
-  align-items:center;
+  grid-template-columns:.65fr repeat(3,1fr);
+  gap:0;
+  align-items:stretch;
 }
-.team-icon {
-  color:var(--accent2);
+
+.team-strip > div {
+  min-height:160px;
+  padding:0 3rem;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.team-strip > div:not(:last-child) {
   border-right:1px solid var(--line);
 }
+
+.team-icon {
+  color:var(--accent2);
+  flex-direction:column;
+  gap:1rem;
+  text-align:center;
+}
+
+.team-icon::after {
+  content:"20+";
+  font-size:3.6rem;
+  font-weight:300;
+  line-height:1;
+  color:var(--accent2);
+}
+
 .team-title {
   font-size:var(--fs-hero);
   font-weight:300;
   line-height:1.2;
   letter-spacing:-.01em;
-  border-right:1px solid var(--line);
 }
+
 .team-list {
-  border-left:1px solid var(--line);
-  padding-left:2rem;
   line-height:2;
+  flex-direction:column;
+  align-items:flex-start !important;
 }
 
 @media(max-width:900px){
