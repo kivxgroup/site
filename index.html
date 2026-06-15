@@ -875,9 +875,10 @@ section { padding: 8rem 3rem; }
 }
 
 .about-title {
-  font-size:clamp(3rem,7vw,6rem);
-  font-weight:300;
-  line-height:.95;
+  font-size: var(--fs-hero);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -.01em;
 }
 
 .about-intro p {
@@ -1220,6 +1221,7 @@ footer {
     <li><a href="#services">Services</a></li>
     <!-- <li><a href="#pricing">Pricing</a></li> -->
     <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Start a project</a>
@@ -1234,6 +1236,7 @@ footer {
   <a href="#services" class="mobile-link">Services</a>
   <!-- <a href="#pricing" class="mobile-link">Pricing</a> -->
   <a href="#process" class="mobile-link">Process</a>
+  <a href="#about" class="mobile-link">About</a>
   <a href="#contact" class="mobile-link">Contact</a>
   <a href="#contact" class="mobile-link mobile-cta">Start a project</a>
 </div>
@@ -1549,21 +1552,13 @@ footer {
   </div>
 </section>
 
-<!-- CLIENT LOGOS -->
-<div class="client-strip-section">
-  <div class="client-strip-label">Trusted by</div>
-  <div class="client-strip-wrap">
-    <div class="client-strip" id="clientStrip"></div>
-  </div>
-</div>
-
 
 <!-- ABOUT -->
 <section id="about">
 <div class="about-header">
 <div>
 <div class="section-tag">About us</div>
-<h2 class="about-title">THE PEOPLE<br>BEHIND KIVX</h2>
+<h2 class="about-title">THE PEOPLE<br>BEHIND KIVX GROUP</h2>
 </div>
 
 <div class="about-intro">
@@ -1601,6 +1596,14 @@ footer {
 </div>
 
 </section>
+
+<!-- CLIENT LOGOS -->
+<div class="client-strip-section">
+  <div class="client-strip-label">Trusted by</div>
+  <div class="client-strip-wrap">
+    <div class="client-strip" id="clientStrip"></div>
+  </div>
+</div>
 
 <!-- CONTACT -->
 <section id="contact">
