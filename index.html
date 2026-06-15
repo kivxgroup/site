@@ -64,7 +64,7 @@ p, li { font-size: var(--fs-base); }
   width: 100%;
   overflow: hidden;
   background: var(--ink);
-  height: 280px;
+  height: 520px;
 }
 
 .photo-strip {
@@ -79,7 +79,7 @@ p, li { font-size: var(--fs-base); }
 .photo-strip::-webkit-scrollbar { display: none; }
 .photo-strip img {
   height: 100%;
-  width: auto;
+  width: 25vw;
   flex-shrink: 0;
   object-fit: cover;
   display: block;
@@ -924,8 +924,25 @@ section { padding: 8rem 3rem; }
   padding-top:3rem;
   border-top:1px solid var(--line);
   display:grid;
-  grid-template-columns:1fr 2fr 1fr;
+  grid-template-columns:.4fr 1.3fr 2fr 1.3fr;
   gap:3rem;
+  align-items:center;
+}
+.team-icon {
+  color:var(--accent2);
+  border-right:1px solid var(--line);
+}
+.team-title {
+  font-size:var(--fs-hero);
+  font-weight:300;
+  line-height:1.2;
+  letter-spacing:-.01em;
+  border-right:1px solid var(--line);
+}
+.team-list {
+  border-left:1px solid var(--line);
+  padding-left:2rem;
+  line-height:2;
 }
 
 @media(max-width:900px){
@@ -1590,9 +1607,12 @@ footer {
 </div>
 
 <div class="team-strip">
-<strong>A PROFESSIONAL TEAM<br>BEHIND EVERY PROJECT</strong>
-<div>Our production team includes senior 3D artists, AI specialists, architects, designers and post-production experts.</div>
-<div>✓ Senior CGI Artists<br>✓ AI Specialists<br>✓ Designers<br>✓ Post-production Experts</div>
+<div class="team-icon">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M2 21v-2a4 4 0 0 1 3-3.87"/><path d="M8 3.13a4 4 0 0 0 0 7.75"/></svg>
+</div>
+<div class="team-title">A professional team<br>behind every project</div>
+<div>Our production team includes senior 3D artists, AI specialists, architects, interior designers, and post-production experts.<br><br>We work as one production unit — aligned, experienced, and focused on delivering visuals that make an impact.</div>
+<div class="team-list">✓ Senior CGI Artists<br>✓ AI & Automation Specialists<br>✓ Architects & Designers<br>✓ Post-Production Experts<br>✓ Project Managers</div>
 </div>
 
 </section>
